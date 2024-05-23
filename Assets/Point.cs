@@ -2,7 +2,11 @@ using UnityEngine;
 
 public class CharacterMovement : MonoBehaviour
 {
-    public Transform[] targetPoints; // Tableau des points de destination
+    // Déclare une instance statique du script pour qu'une seule instance soit conservée entre les scènes
+    private static CharacterMovement instance;
+
+    // Déclaration des variables pour les points de destination et les paramètres de mouvement
+    public GameObject[] targetPoints; // Tableau des points de destination en tant que GameObject
     public float speed = 5f; // Vitesse de déplacement du personnage
     public float stoppingDistance = 0.1f; // Distance seuil pour considérer que le personnage a atteint un point
     public bool n0 = true; // Condition pour permettre l'accès au point 1
@@ -12,6 +16,30 @@ public class CharacterMovement : MonoBehaviour
 
     private int currentTargetIndex = 0; // Index du point de destination actuel
     private bool isMoving = true; // Indique si le personnage est en mouvement ou non
+
+    public GameObject specialObject1; // GameObject à activer quand n1 est vrai
+    public GameObject specialObject2; // GameObject à activer quand n2 est vrai
+    public GameObject specialObject3; // GameObject à activer quand n3 est vrai
+
+    void Awake()
+    {
+        // Assurez-vous qu'il n'y a qu'une seule instance de ce script dans le jeu
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+            
+            // Marquez les targetPoints pour ne pas les détruire entre les scènes
+            foreach (GameObject targetPoint in targetPoints)
+            {
+                DontDestroyOnLoad(targetPoint);
+            }
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     void Update()
     {
@@ -37,28 +65,33 @@ public class CharacterMovement : MonoBehaviour
                 isMoving = true; // Démarre le mouvement vers le nouveau point de destination
             }
         }
+
+        // Activer ou désactiver les objets spéciaux en fonction des booléens
+        if (specialObject1 != null)
+        {
+            specialObject1.SetActive(n1);
+        }
+        if (specialObject2 != null)
+        {
+            specialObject2.SetActive(n2);
+        }
+        if (specialObject3 != null)
+        {
+            specialObject3.SetActive(n3);
+        }
     }
 
     bool CanMoveToNextPoint(int targetIndex)
     {
         // Vérifie la condition pour permettre l'accès au point cible
-        if (targetIndex == 0)
+        switch (targetIndex)
         {
-            return n0;
+            case 0: return n0;
+            case 1: return n1;
+            case 2: return n2;
+            case 3: return n3;
+            default: return false;
         }
-        else if (targetIndex == 1)
-        {
-            return n1;
-        }
-        else if (targetIndex == 2)
-        {
-            return n2;
-        }
-        else if (targetIndex == 3)
-        {
-            return n3;
-        }
-        return false;
     }
 
     void MoveToTarget()
@@ -71,7 +104,7 @@ public class CharacterMovement : MonoBehaviour
         }
 
         // Calculer la direction vers le point de destination
-        Vector3 direction = targetPoints[currentTargetIndex].position - transform.position;
+        Vector3 direction = targetPoints[currentTargetIndex].transform.position - transform.position;
 
         // Si le personnage n'a pas atteint le point de destination
         if (direction.magnitude > stoppingDistance)

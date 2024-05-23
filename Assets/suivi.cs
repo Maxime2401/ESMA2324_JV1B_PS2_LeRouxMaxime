@@ -5,9 +5,11 @@ public class Mountmovements : MonoBehaviour
     public Transform player; // Référence au joueur
     public float movementSpeed = 5f; // Vitesse de déplacement de la monture
     public float followDuration = 5f; // Durée pendant laquelle la monture suit le joueur après avoir rencontré un obstacle
+    public GameObject specialObject; // Objet spécial à vérifier
 
     private bool isFollowing = false; // Indique si la monture suit le joueur
     private float followTimer = 0f; // Compteur pour la durée de suivi
+    private bool isSpecialObjectTouchingPlayer = false; // Indique si l'objet spécial touche le joueur
 
     void Start()
     {
@@ -17,7 +19,7 @@ public class Mountmovements : MonoBehaviour
 
     void Update()
     {
-        if (isFollowing)
+        if (isFollowing && !isSpecialObjectTouchingPlayer)
         {
             MoveTowardsPlayer();
             followTimer += Time.deltaTime;
@@ -40,6 +42,19 @@ public class Mountmovements : MonoBehaviour
         else if (other.CompareTag("Player"))
         {
             isFollowing = false; // Arrête le suivi du joueur lorsque la monture entre en collision avec le joueur
+        }
+        else if (other.gameObject == specialObject)
+        {
+            isSpecialObjectTouchingPlayer = true; // Marque que l'objet spécial touche le joueur
+            isFollowing = false; // Arrête le suivi du joueur lorsque l'objet spécial touche le joueur
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.gameObject == specialObject)
+        {
+            isSpecialObjectTouchingPlayer = false; // Marque que l'objet spécial ne touche plus le joueur
         }
     }
 

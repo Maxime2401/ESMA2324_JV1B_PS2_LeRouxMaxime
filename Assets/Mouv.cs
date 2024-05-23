@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 public class BasicCharacterController : MonoBehaviour
@@ -17,9 +16,12 @@ public class BasicCharacterController : MonoBehaviour
     private bool hasJumped = false; // Indique si le joueur a déjà sauté dans l'air
     private float jumpTime = 0f; // Temps écoulé depuis que la touche de saut est enfoncée
 
+    private KeyBindingsManager keyBindingsManager; // Référence au gestionnaire de touches
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>(); // Initialisation du composant Rigidbody2D
+        keyBindingsManager = FindObjectOfType<KeyBindingsManager>(); // Trouver le gestionnaire de touches dans la scène
     }
 
     void Update()
@@ -27,11 +29,26 @@ public class BasicCharacterController : MonoBehaviour
         // Vérifie si le personnage touche le sol
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.1f);
 
-        // Réinitialise la vitesse si le personnage touche le sol ou si le joueur relâche la touche d'espace
-        if (isGrounded || (isChargingJump && Input.GetKeyUp(KeyCode.Space)))
+        // Déplacement horizontal
+        float moveInput = 0f;
+        if (keyBindingsManager.GetKeyCodeForAction("MoveLeft") != KeyCode.None)
         {
-            moveSpeed = isChargingJump ? chargingMoveSpeed : moveSpeed;
+            if (Input.GetKey(keyBindingsManager.GetKeyCodeForAction("MoveLeft")))
+            {
+                moveInput -= 1f;
+            }
         }
+        if (keyBindingsManager.GetKeyCodeForAction("MoveRight") != KeyCode.None)
+        {
+            if (Input.GetKey(keyBindingsManager.GetKeyCodeForAction("MoveRight")))
+            {
+                moveInput += 1f;
+            }
+        }
+
+        // Appliquer le mouvement horizontal
+        float moveSpeedAdjusted = isGrounded ? moveSpeed : airMoveSpeed;
+        rb.velocity = new Vector2(moveInput * moveSpeedAdjusted, rb.velocity.y);
 
         // Gestion du saut
         if (isGrounded)
@@ -39,7 +56,7 @@ public class BasicCharacterController : MonoBehaviour
             if (!isChargingJump)
             {
                 // Si la touche de saut est enfoncée, commence à charger le saut
-                if (Input.GetKeyDown(KeyCode.Space))
+                if (Input.GetKeyDown(keyBindingsManager.GetKeyCodeForAction("Jump")))
                 {
                     isChargingJump = true;
                     jumpTime = 0f; // Réinitialise le temps de saut lorsque la touche est pressée
@@ -48,25 +65,21 @@ public class BasicCharacterController : MonoBehaviour
             else
             {
                 // Si la touche de saut est maintenue enfoncée, continue à charger le saut
-                if (Input.GetKey(KeyCode.Space))
+                if (Input.GetKey(keyBindingsManager.GetKeyCodeForAction("Jump")))
                 {
                     jumpTime += Time.deltaTime;
                     // Si le joueur charge le saut, ajuste la vitesse de déplacement
                     moveSpeed = chargingMoveSpeed;
                 }
+// Suite du script BasicCharacterController
 
                 // Si la touche de saut est relâchée, effectue un saut
-                if (Input.GetKeyUp(KeyCode.Space))
+                if (Input.GetKeyUp(keyBindingsManager.GetKeyCodeForAction("Jump")))
                 {
                     Jump();
                 }
             }
         }
-
-        // Déplacement horizontal
-        float moveSpeedAdjusted = isGrounded ? moveSpeed : airMoveSpeed; // Change la vitesse de déplacement en l'air si le joueur a déjà sauté
-        float moveInput = Input.GetAxis("Horizontal");
-        rb.velocity = new Vector2(moveInput * moveSpeedAdjusted, rb.velocity.y);
     }
 
     void Jump()
@@ -104,8 +117,6 @@ public class BasicCharacterController : MonoBehaviour
         Debug.Log("Le saut est effectué. La vitesse du personnage après le saut : " + moveSpeed);
     }
 
-
-
     void OnCollisionEnter2D(Collision2D collision)
     {
         // Réinitialiser l'état de saut lorsque le joueur touche le sol
@@ -115,3 +126,5 @@ public class BasicCharacterController : MonoBehaviour
         }
     }
 }
+
+               

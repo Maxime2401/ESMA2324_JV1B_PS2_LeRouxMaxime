@@ -75,6 +75,7 @@ public class MountInteraction : MonoBehaviour
                 {
                     script.enabled = true;
                 }
+                //rajouter ici si le joueur ne touche plus degameobject avec le tag monter object alors DetachFromMount()
             }
             else
             {
@@ -155,5 +156,13 @@ public class MountInteraction : MonoBehaviour
         }
 
         return closestMount;
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("monter object") && isAttached)
+        {
+            DetachFromMount();
+        }
     }
 }
