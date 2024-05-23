@@ -4,68 +4,82 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour
 {
     public float moveSpeed = 5f; // Vitesse de déplacement
-    public float flightDuration = 5f; // Durée de vol en secondes
     public Slider flightDurationSlider; // Référence au slider
     public Vector3 sliderOffset; // Offset pour positionner le slider au-dessus du joueur
+    public float rechargeRate = 10f; // Taux de recharge par seconde
+    public float maxFlightDuration = 100f; // Durée de vol maximale
+    public float drainRate = 20f; // Taux de vidange de la barre de vol lorsque le joueur vole
 
-    private float flightTimeElapsed = 0f; // Temps de vol écoulé
-    private bool canFly = true; // Indique si le joueur peut voler
+    private bool isGrounded = false; // Indique si le joueur touche le sol
+    private Rigidbody2D rb; // Référence au Rigidbody2D
+    private float currentFlightDuration = 0f; // Durée de vol actuelle
 
     void Start()
     {
-        // Initialiser le slider
-        if (flightDurationSlider != null)
-        {
-            flightDurationSlider.minValue = 0;
-            flightDurationSlider.maxValue = flightDuration;
-            flightDurationSlider.value = flightDuration;
-            flightDurationSlider.gameObject.SetActive(false); // Masquer le slider au début
-        }
+        rb = GetComponent<Rigidbody2D>(); // Obtient le Rigidbody2D
+        InitializeFlightDurationSlider();
+        ToggleFlightDurationSlider(true); // Activer la barre de durée de vol au démarrage
     }
 
     void Update()
     {
-        // Contrôles de déplacement avec les flèches directionnelles
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
-
-        // Calcul du vecteur de déplacement
-        Vector3 movement = new Vector3(horizontalInput, canFly ? verticalInput : 0f, 0f) * moveSpeed * Time.deltaTime;
-
-        // Appliquer le déplacement à la position de l'objet
-        transform.Translate(movement);
-
-        // Mettre à jour le temps de vol écoulé
-        if (canFly)
+        if (isGrounded)
         {
-            flightTimeElapsed += Time.deltaTime;
-
-            // Vérifier si la durée de vol est écoulée
-            if (flightTimeElapsed >= flightDuration)
-            {
-                canFly = false;
-            }
+            RechargeFlight();
+        }
+        else
+        {
+            DrainFlight();
         }
 
-        // Mettre à jour la position et la valeur du slider
+        // Déplacer le joueur de gauche à droite indépendamment de la barre de vol
+        HandleHorizontalMovement();
+
+        // Vérifier si le joueur peut voler (durée de vol supérieure à zéro)
+        if (currentFlightDuration > 0)
+        {
+            // Si la durée de vol est supérieure à zéro, le joueur peut voler
+            
+            HandleVerticalMovement(); // Gérer le mouvement vertical (haut/bas)
+        }
+
         UpdateFlightDurationSlider();
         UpdateSliderPosition();
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    void HandleHorizontalMovement()
     {
-        // Vérifier si le joueur touche le sol
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            // Réinitialiser le temps de vol écoulé et permettre de voler à nouveau
-            flightTimeElapsed = 0f;
-            canFly = true;
+        float horizontalInput = Input.GetAxis("Horizontal");
+        Vector2 movement = new Vector2(horizontalInput, 0f) * moveSpeed;
+        rb.velocity = new Vector2(movement.x, rb.velocity.y);
+    }
 
-            // Masquer le slider lorsqu'il touche le sol
-            if (flightDurationSlider != null)
-            {
-                flightDurationSlider.gameObject.SetActive(false);
-            }
+    void HandleVerticalMovement()
+    {
+        float verticalInput = Input.GetAxis("Vertical");
+        Vector2 movement = new Vector2(0f, verticalInput) * moveSpeed;
+        rb.velocity = new Vector2(rb.velocity.x, movement.y);
+    }
+
+    void RechargeFlight()
+    {
+        currentFlightDuration += rechargeRate * Time.deltaTime;
+        currentFlightDuration = Mathf.Clamp(currentFlightDuration, 0f, maxFlightDuration);
+    }
+
+    void DrainFlight()
+    {
+        currentFlightDuration -= drainRate * Time.deltaTime;
+        currentFlightDuration = Mathf.Clamp(currentFlightDuration, 0f, maxFlightDuration);
+    }
+
+    void InitializeFlightDurationSlider()
+    {
+        if (flightDurationSlider != null)
+        {
+            flightDurationSlider.minValue = 0;
+            flightDurationSlider.maxValue = maxFlightDuration;
+            flightDurationSlider.value = currentFlightDuration;
         }
     }
 
@@ -73,29 +87,50 @@ public class PlayerController : MonoBehaviour
     {
         if (flightDurationSlider != null)
         {
-            float remainingFlightTime = Mathf.Clamp(flightDuration - flightTimeElapsed, 0, flightDuration);
-            flightDurationSlider.value = remainingFlightTime;
-
-            // Afficher le slider lorsque le joueur est en l'air
-            if (!canFly)
-            {
-                flightDurationSlider.gameObject.SetActive(true);
-            }
+            flightDurationSlider.value = currentFlightDuration;
         }
     }
 
     void UpdateSliderPosition()
     {
+        if (flightDurationSlider != null && flightDurationSlider.gameObject.activeSelf)
+        {
+            Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position + sliderOffset);
+            flightDurationSlider.transform.position = new Vector3(screenPos.x, screenPos.y + 20, screenPos.z);
+        }
+    }
+
+    void ToggleFlightDurationSlider(bool isActive)
+    {
         if (flightDurationSlider != null)
         {
-            // Obtenir la position du joueur dans l'espace de l'écran
-            Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position + sliderOffset);
-
-            // Mettre à jour la position du Slider en fonction de la position du joueur
-            flightDurationSlider.transform.position = screenPos;
-
-            // Réinitialiser la position en Y pour que le Slider soit au-dessus du joueur
-            flightDurationSlider.transform.position = new Vector3(flightDurationSlider.transform.position.x, screenPos.y + 20, flightDurationSlider.transform.position.z);
+            flightDurationSlider.gameObject.SetActive(isActive);
         }
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            isGrounded = true;
+        }
+    }
+
+    void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            isGrounded = false;
+        }
+    }
+
+    void OnEnable()
+    {
+        ToggleFlightDurationSlider(true); // Activer la barre de durée de vol lorsque le script est activé
+    }
+
+    void OnDisable()
+    {
+        ToggleFlightDurationSlider(false); // Désactiver la barre de durée de vol lorsque le script est désactivé
     }
 }

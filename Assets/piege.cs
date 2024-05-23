@@ -9,7 +9,7 @@ public class ActivateGameObject : MonoBehaviour
 
     private bool isPlayerTouching = false; // Indique si le joueur est en contact avec le GameObject
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
@@ -19,7 +19,7 @@ public class ActivateGameObject : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    private void OnTriggerExit2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
@@ -33,12 +33,30 @@ public class ActivateGameObject : MonoBehaviour
         Debug.Log("Coroutine started. Waiting for activation delay: " + activationDelay + " seconds.");
         yield return new WaitForSeconds(activationDelay); // Attendre le délai d'activation
 
-        Debug.Log("Activation delay complete. Activating GameObject for duration: " + activeDuration + " seconds.");
-        objectToActivate.SetActive(true); // Activer le GameObject
+        if (isPlayerTouching) // Vérifie de nouveau si le joueur est toujours en contact avant d'activer
+        {
+            Debug.Log("Activation delay complete. Activating GameObject for duration: " + activeDuration + " seconds.");
+            if (objectToActivate != null)
+            {
+                objectToActivate.SetActive(true); // Activer le GameObject
+                Debug.Log("Object activated: " + objectToActivate.name);
+            }
+            else
+            {
+                Debug.LogWarning("objectToActivate is not assigned.");
+            }
 
-        yield return new WaitForSeconds(activeDuration); // Attendre la durée d'activation
+            yield return new WaitForSeconds(activeDuration); // Attendre la durée d'activation
 
-        Debug.Log("Active duration complete. Deactivating GameObject.");
-        objectToActivate.SetActive(false); // Désactiver le GameObject
+            if (objectToActivate != null)
+            {
+                objectToActivate.SetActive(false); // Désactiver le GameObject
+                Debug.Log("Object deactivated: " + objectToActivate.name);
+            }
+            else
+            {
+                Debug.LogWarning("objectToActivate is not assigned.");
+            }
+        }
     }
 }

@@ -9,9 +9,13 @@ public class BasicCharacterController : MonoBehaviour
     public float maxJumpForce = 20f; // Force de saut maximale du personnage
     public float jumpTimeThreshold = 0.5f; // Durée minimale de maintien de la touche de saut pour un saut maximal
     public Transform groundCheck; // Transform de vérification du sol
+    public GameObject captGauche;
+    public GameObject captDroit;
 
     private Rigidbody2D rb;
     private bool isGrounded;
+    public bool droite = true;
+    public bool gauche = true;
     private bool isChargingJump = false; // Indique si le saut est en cours de chargement
     private bool hasJumped = false; // Indique si le joueur a déjà sauté dans l'air
     private float jumpTime = 0f; // Temps écoulé depuis que la touche de saut est enfoncée
@@ -31,16 +35,16 @@ public class BasicCharacterController : MonoBehaviour
 
         // Déplacement horizontal
         float moveInput = 0f;
-        if (keyBindingsManager.GetKeyCodeForAction("MoveLeft") != KeyCode.None)
+        if (keyBindingsManager.GetKeyCodeForAction("MoveLeft") != KeyCode.None && gauche)
         {
-            if (Input.GetKey(keyBindingsManager.GetKeyCodeForAction("MoveLeft")))
+            if (Input.GetKey(keyBindingsManager.GetKeyCodeForAction("MoveLeft")) )
             {
                 moveInput -= 1f;
             }
         }
-        if (keyBindingsManager.GetKeyCodeForAction("MoveRight") != KeyCode.None)
+        if (keyBindingsManager.GetKeyCodeForAction("MoveRight") != KeyCode.None && droite)
         {
-            if (Input.GetKey(keyBindingsManager.GetKeyCodeForAction("MoveRight")))
+            if (Input.GetKey(keyBindingsManager.GetKeyCodeForAction("MoveRight")) )
             {
                 moveInput += 1f;
             }
@@ -71,7 +75,6 @@ public class BasicCharacterController : MonoBehaviour
                     // Si le joueur charge le saut, ajuste la vitesse de déplacement
                     moveSpeed = chargingMoveSpeed;
                 }
-// Suite du script BasicCharacterController
 
                 // Si la touche de saut est relâchée, effectue un saut
                 if (Input.GetKeyUp(keyBindingsManager.GetKeyCodeForAction("Jump")))
@@ -103,16 +106,7 @@ public class BasicCharacterController : MonoBehaviour
         jumpTime = 0f;
 
         // Réinitialiser la vitesse du personnage à sa valeur normale après le saut
-        if (isGrounded)
-        {
-            moveSpeed = 4f;
-            Debug.Log("La vitesse du personnage après le saut au sol : " + moveSpeed);
-        }
-        else
-        {
-            moveSpeed = airMoveSpeed;
-            Debug.Log("La vitesse du personnage après le saut dans les airs : " + moveSpeed);
-        }
+        moveSpeed = isGrounded ? 4f : airMoveSpeed;
 
         Debug.Log("Le saut est effectué. La vitesse du personnage après le saut : " + moveSpeed);
     }
@@ -124,7 +118,34 @@ public class BasicCharacterController : MonoBehaviour
         {
             hasJumped = false;
         }
-    }
-}
 
-               
+        // Vérifier les collisions avec les capteurs gauche et droit
+        if (collision.collider.gameObject == captGauche && collision.gameObject.CompareTag("Wall"))
+        {
+            Debug.Log("Collision détectée avec le mur gauche.");
+            gauche = false;
+        }
+
+        if (collision.collider.gameObject == captDroit && collision.gameObject.CompareTag("Wall"))
+        {
+            Debug.Log("Collision détectée avec le mur droit.");
+            droite = false;
+        }
+    }
+    void OnCollisionExit2D(Collision2D collision)
+    {
+        // Réinitialiser les drapeaux lorsque les collisions cessent
+        if (collision.collider == captGauche && collision.gameObject.CompareTag("Wall"))
+        {
+            Debug.Log("Collision avec le mur gauche terminée.");
+            gauche = true;
+        }
+
+        if (collision.collider == captDroit && collision.gameObject.CompareTag("Wall"))
+        {
+            Debug.Log("Collision avec le mur droit terminée.");
+            droite = true;
+        }
+    }
+
+}
