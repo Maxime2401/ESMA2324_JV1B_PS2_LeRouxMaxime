@@ -1,17 +1,19 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class barvi : MonoBehaviour
 {
     public int maxHealth = 10;
     public int currentHealth;
-    public int health;
     public float invincibleflashdelay = 0.1f;
     public bool invincible = false;
     public Vector3 respawnPosition; // Position de respawn
     public SpriteRenderer graphics;
     public HealthBar HealthBar;
     public GameObject currentCheckpoint; // Référence au dernier checkpoint activé
+    public Image transitionCircle; // Référence à l'image circulaire pour la transition
+    public float transitionDuration = 1f; // Durée de la transition
 
     void Start()
     {
@@ -21,6 +23,12 @@ public class barvi : MonoBehaviour
         currentHealth = maxHealth;
         HealthBar.SetMaxHealth(maxHealth);
         HealthBar.SetHealth(currentHealth);
+
+        // Assurez-vous que la transition est invisible au départ
+        if (transitionCircle != null)
+        {
+            transitionCircle.rectTransform.localScale = Vector3.zero;
+        }
     }
 
     void SetInitialSpawnPosition()
@@ -29,7 +37,7 @@ public class barvi : MonoBehaviour
         respawnPosition = transform.position;
     }
 
-    void Update() // teste
+    void Update()
     {
         if (Input.GetKeyDown(KeyCode.R))
         {
@@ -54,47 +62,68 @@ public class barvi : MonoBehaviour
         {
             currentHealth -= damage;
             HealthBar.SetHealth(currentHealth);
-            StartCoroutine(EnableInvincibilityWithDelay());
 
             if (currentHealth <= 0)
             {
-                Debug.Log("Player health reached 0. Teleporting player...");
-                TeleportPlayer(); // téléportation si la santé est <= 0
+                Debug.Log("La santé du joueur est à 0. Téléportation du joueur après un délai...");
+                StartCoroutine(HandleTeleportationWithTransition(2f)); // Attendre 2 secondes avant de téléporter avec transition
+            }
+            else
+            {
+                StartCoroutine(EnableInvincibilityWithDelay());
             }
         }
     }
 
-    public IEnumerator invincibleFrash()
+    IEnumerator HandleTeleportationWithTransition(float delay)
     {
-        while (invincible)
-        {
-            graphics.color = new Color(1f, 1f, 1f, 0f);
-            yield return new WaitForSeconds(invincibleflashdelay);
-            graphics.color = new Color(1f, 1f, 1f, 1f);
-            yield return new WaitForSeconds(invincibleflashdelay);
-        }
+        // Démarrer la transition circulaire entrant
+       
+
+        // Attendre le délai avant de téléporter
+        yield return new WaitForSeconds(delay);
+        yield return StartCoroutine(ScaleTransitionCircle(Vector3.one, transitionDuration));
+        // Téléporter le joueur
+        TeleportPlayer();
+
+        // Démarrer la transition circulaire sortant
+        yield return StartCoroutine(ScaleTransitionCircle(Vector3.zero, transitionDuration));
     }
 
-    public IEnumerator HandinvincibleDelay()
+    IEnumerator ScaleTransitionCircle(Vector3 targetScale, float duration)
     {
-        yield return new WaitForSeconds(0.3f); // temps d'invincibilité
-        invincible = false;
+        if (transitionCircle == null)
+        {
+            yield break;
+        }
+
+        Vector3 startScale = transitionCircle.rectTransform.localScale;
+        float time = 0f;
+
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            transitionCircle.rectTransform.localScale = Vector3.Lerp(startScale, targetScale, time / duration);
+            yield return null;
+        }
+
+        transitionCircle.rectTransform.localScale = targetScale;
     }
 
     void TeleportPlayer()
     {
-        Debug.Log("Teleporting player to checkpoint...");
-        transform.position = respawnPosition; // Téléporte le joueur à la position de respawn
-        currentHealth = maxHealth; // réinitialiser la vie du joueur
+        Debug.Log("Téléportation du joueur au checkpoint...");
+        transform.position = respawnPosition; // Téléporter le joueur à la position de respawn
+        currentHealth = maxHealth; // Réinitialiser la vie du joueur
         HealthBar.SetHealth(currentHealth);
-        Debug.Log("Player teleported!");
+        Debug.Log("Joueur téléporté !");
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Checkpoint"))
         {
-            Debug.Log("Checkpoint touched!");
+            Debug.Log("Checkpoint atteint !");
             SetCheckpoint(other.gameObject);
         }
     }
@@ -113,17 +142,28 @@ public class barvi : MonoBehaviour
         StartCoroutine(DisableInvincibility());
     }
 
+    IEnumerator invincibleFrash()
+    {
+        while (invincible)
+        {
+            graphics.color = new Color(1f, 1f, 1f, 0f);
+            yield return new WaitForSeconds(invincibleflashdelay);
+            graphics.color = new Color(1f, 1f, 1f, 1f);
+            yield return new WaitForSeconds(invincibleflashdelay);
+        }
+    }
+
     IEnumerator DisableInvincibility()
     {
-        yield return new WaitForSeconds(2f); // Attendre pendant 3 secondes
+        yield return new WaitForSeconds(2f); // Attendre pendant 2 secondes
         invincible = false; // Désactiver l'invincibilité
     }
 
     public void SetCheckpoint(GameObject checkpoint)
     {
-        Debug.Log("Setting new checkpoint...");
-        currentCheckpoint = checkpoint; // Définit le nouveau checkpoint
-        respawnPosition = checkpoint.transform.position; // Met à jour la position de respawn
-        Debug.Log("Checkpoint position: " + respawnPosition);
+        Debug.Log("Définir un nouveau checkpoint...");
+        currentCheckpoint = checkpoint; // Définir le nouveau checkpoint
+        respawnPosition = checkpoint.transform.position; // Mettre à jour la position de respawn
+        Debug.Log("Position du checkpoint : " + respawnPosition);
     }
 }

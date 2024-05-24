@@ -9,8 +9,8 @@ public class BasicCharacterController : MonoBehaviour
     public float maxJumpForce = 20f; // Force de saut maximale du personnage
     public float jumpTimeThreshold = 0.5f; // Durée minimale de maintien de la touche de saut pour un saut maximal
     public Transform groundCheck; // Transform de vérification du sol
-    public GameObject captGauche;
-    public GameObject captDroit;
+    public Collider2D captGauche;
+    public Collider2D captDroit;
 
     private Rigidbody2D rb;
     private bool isGrounded;
@@ -120,18 +120,19 @@ public class BasicCharacterController : MonoBehaviour
         }
 
         // Vérifier les collisions avec les capteurs gauche et droit
-        if (collision.collider.gameObject == captGauche && collision.gameObject.CompareTag("Wall"))
+        if (collision.collider == captGauche && collision.gameObject.CompareTag("Wall"))
         {
             Debug.Log("Collision détectée avec le mur gauche.");
             gauche = false;
         }
 
-        if (collision.collider.gameObject == captDroit && collision.gameObject.CompareTag("Wall"))
+        if (collision.collider == captDroit && collision.gameObject.CompareTag("Wall"))
         {
             Debug.Log("Collision détectée avec le mur droit.");
             droite = false;
         }
     }
+
     void OnCollisionExit2D(Collision2D collision)
     {
         // Réinitialiser les drapeaux lorsque les collisions cessent
