@@ -14,17 +14,15 @@ public class barvi : MonoBehaviour
     public GameObject currentCheckpoint; // Référence au dernier checkpoint activé
     public Image transitionCircle; // Référence à l'image circulaire pour la transition
     public float transitionDuration = 1f; // Durée de la transition
+    public Animator animator; // Référence à l'Animator
 
     void Start()
     {
-        // Définir la position de réapparition initiale au démarrage du jeu
         SetInitialSpawnPosition();
-        // Initialiser la santé actuelle au maximum au démarrage
         currentHealth = maxHealth;
         HealthBar.SetMaxHealth(maxHealth);
         HealthBar.SetHealth(currentHealth);
 
-        // Assurez-vous que la transition est invisible au départ
         if (transitionCircle != null)
         {
             transitionCircle.rectTransform.localScale = Vector3.zero;
@@ -33,7 +31,6 @@ public class barvi : MonoBehaviour
 
     void SetInitialSpawnPosition()
     {
-        // Assigner une position initiale arbitraire
         respawnPosition = transform.position;
     }
 
@@ -48,10 +45,9 @@ public class barvi : MonoBehaviour
     public void TakeEnergie(int energie)
     {
         currentHealth += energie;
-        // Vérifier si la santé actuelle dépasse la santé maximale
         if (currentHealth > maxHealth)
         {
-            currentHealth = maxHealth; // Réinitialiser la santé à la valeur maximale
+            currentHealth = maxHealth;
         }
         HealthBar.SetHealth(currentHealth);
     }
@@ -65,7 +61,7 @@ public class barvi : MonoBehaviour
 
             if (currentHealth <= 0)
             {
-                Debug.Log("La santé du joueur est à 0. Téléportation du joueur après un délai...");
+                animator.SetBool("isDead", true); // Déclencher l'animation de mort
                 StartCoroutine(HandleTeleportationWithTransition(2f)); // Attendre 2 secondes avant de téléporter avec transition
             }
             else
@@ -77,16 +73,15 @@ public class barvi : MonoBehaviour
 
     IEnumerator HandleTeleportationWithTransition(float delay)
     {
-        // Démarrer la transition circulaire entrant
-       
+        // Démarrer la transition circulaire entrante
 
         // Attendre le délai avant de téléporter
         yield return new WaitForSeconds(delay);
         yield return StartCoroutine(ScaleTransitionCircle(Vector3.one, transitionDuration));
-        // Téléporter le joueur
+        animator.SetBool("isDead", false);
         TeleportPlayer();
 
-        // Démarrer la transition circulaire sortant
+        // Démarrer la transition circulaire sortante
         yield return StartCoroutine(ScaleTransitionCircle(Vector3.zero, transitionDuration));
     }
 
@@ -112,37 +107,32 @@ public class barvi : MonoBehaviour
 
     void TeleportPlayer()
     {
-        Debug.Log("Téléportation du joueur au checkpoint...");
         transform.position = respawnPosition; // Téléporter le joueur à la position de respawn
         currentHealth = maxHealth; // Réinitialiser la vie du joueur
         HealthBar.SetHealth(currentHealth);
-        Debug.Log("Joueur téléporté !");
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Checkpoint"))
         {
-            Debug.Log("Checkpoint atteint !");
             SetCheckpoint(other.gameObject);
         }
     }
 
     IEnumerator EnableInvincibilityWithDelay()
     {
-        // Attendre une demi-seconde
         yield return new WaitForSeconds(0.1f);
 
-        // Après avoir attendu, activer l'invincibilité
-        Debug.Log("Touché par un ennemi");
         invincible = true;
-        StartCoroutine(invincibleFrash());
+        StartCoroutine(invincibleFlash());
 
-        // Démarrer la coroutine pour désactiver l'invincibilité après un certain temps
-        StartCoroutine(DisableInvincibility());
+        yield return new WaitForSeconds(2f);
+        invincible = false;
+        animator.SetBool("isDead", false); // Désactiver l'animation de mort
     }
 
-    IEnumerator invincibleFrash()
+    IEnumerator invincibleFlash()
     {
         while (invincible)
         {
@@ -153,17 +143,9 @@ public class barvi : MonoBehaviour
         }
     }
 
-    IEnumerator DisableInvincibility()
-    {
-        yield return new WaitForSeconds(2f); // Attendre pendant 2 secondes
-        invincible = false; // Désactiver l'invincibilité
-    }
-
     public void SetCheckpoint(GameObject checkpoint)
     {
-        Debug.Log("Définir un nouveau checkpoint...");
-        currentCheckpoint = checkpoint; // Définir le nouveau checkpoint
-        respawnPosition = checkpoint.transform.position; // Mettre à jour la position de respawn
-        Debug.Log("Position du checkpoint : " + respawnPosition);
+        currentCheckpoint = checkpoint;
+        respawnPosition = checkpoint.transform.position;
     }
 }

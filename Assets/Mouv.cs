@@ -21,30 +21,57 @@ public class BasicCharacterController : MonoBehaviour
     private float jumpTime = 0f; // Temps écoulé depuis que la touche de saut est enfoncée
 
     private KeyBindingsManager keyBindingsManager; // Référence au gestionnaire de touches
+    private Animator animator; // Référence à l'Animator
+    private SpriteRenderer spriteRenderer; // Référence au SpriteRenderer
+    private bool isAscending = false; // Indique si le personnage est en train de monter
+    private bool isDescending = false; // Indique si le personnage est en train de descendre
+    private float previousYPosition; // Position Y précédente du personnage
+
 
     void Start()
     {
+        previousYPosition = transform.position.y;
         rb = GetComponent<Rigidbody2D>(); // Initialisation du composant Rigidbody2D
         keyBindingsManager = FindObjectOfType<KeyBindingsManager>(); // Trouver le gestionnaire de touches dans la scène
+        animator = GetComponent<Animator>(); // Initialisation de l'Animator
+        spriteRenderer = GetComponent<SpriteRenderer>(); // Initialisation du SpriteRenderer
     }
 
     void Update()
     {
+
+
         // Vérifie si le personnage touche le sol
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.1f);
+
+        float verticalMovement = transform.position.y - previousYPosition;
+
+        // Mise à jour de la position Y précédente
+        previousYPosition = transform.position.y;
+
+        // Mise à jour des booléens d'ascension et de descente
+        isAscending = verticalMovement > 0;
+        if (isDescending = verticalMovement < 0)
+        {
+            animator.SetBool("Fall", true);
+        }
+
+        // Mettre à jour l'état de l'Animator en fonction du mouvement vertical
+        animator.SetBool("Up", isAscending);
+        
 
         // Déplacement horizontal
         float moveInput = 0f;
         if (keyBindingsManager.GetKeyCodeForAction("MoveLeft") != KeyCode.None && gauche)
         {
-            if (Input.GetKey(keyBindingsManager.GetKeyCodeForAction("MoveLeft")) )
+            if (Input.GetKey(keyBindingsManager.GetKeyCodeForAction("MoveLeft")))
             {
                 moveInput -= 1f;
             }
         }
         if (keyBindingsManager.GetKeyCodeForAction("MoveRight") != KeyCode.None && droite)
         {
-            if (Input.GetKey(keyBindingsManager.GetKeyCodeForAction("MoveRight")) )
+            if (Input.GetKey(keyBindingsManager.GetKeyCodeForAction("MoveRight")))
             {
                 moveInput += 1f;
             }
@@ -53,6 +80,24 @@ public class BasicCharacterController : MonoBehaviour
         // Appliquer le mouvement horizontal
         float moveSpeedAdjusted = isGrounded ? moveSpeed : airMoveSpeed;
         rb.velocity = new Vector2(moveInput * moveSpeedAdjusted, rb.velocity.y);
+
+        // Mise à jour des animations et flip du sprite
+        if (isGrounded)
+        {
+            if (moveInput != 0)
+            {
+                animator.SetBool("Run", true);
+                spriteRenderer.flipX = moveInput < 0; // Flip le sprite en fonction de la direction
+            }
+            else
+            {
+                animator.SetBool("Run", false);
+            }
+        }
+        else
+        {
+            animator.SetBool("Run", false);
+        }
 
         // Gestion du saut
         if (isGrounded)
@@ -72,6 +117,7 @@ public class BasicCharacterController : MonoBehaviour
                 if (Input.GetKey(keyBindingsManager.GetKeyCodeForAction("Jump")))
                 {
                     jumpTime += Time.deltaTime;
+                    animator.SetBool("Charge", true);
                     // Si le joueur charge le saut, ajuste la vitesse de déplacement
                     moveSpeed = chargingMoveSpeed;
                 }
@@ -79,6 +125,7 @@ public class BasicCharacterController : MonoBehaviour
                 // Si la touche de saut est relâchée, effectue un saut
                 if (Input.GetKeyUp(keyBindingsManager.GetKeyCodeForAction("Jump")))
                 {
+                    animator.SetBool("Charge", false);
                     Jump();
                 }
             }
@@ -117,6 +164,7 @@ public class BasicCharacterController : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             hasJumped = false;
+            animator.SetBool("Fall", false);
         }
 
         // Vérifier les collisions avec les capteurs gauche et droit
@@ -148,5 +196,4 @@ public class BasicCharacterController : MonoBehaviour
             droite = true;
         }
     }
-
 }
