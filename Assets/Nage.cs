@@ -1,49 +1,71 @@
 using UnityEngine;
 
-public class Swimming : MonoBehaviour
+public class Nage : MonoBehaviour
 {
-    public float swimSpeed = 2f; // Vitesse de nage
-    public float riseSpeed = 1f; // Vitesse de montée
-    public float descentSpeed = 1f; // Vitesse de descente
+    public float moveSpeed = 5f; // Vitesse de déplacement normale du personnage
+    public float jumpForce = 10f; // Force de saut du personnage
+    public Animator animator; // Référence à l'Animator
+    public KeyCode moveLeftKey = KeyCode.LeftArrow; // Touche pour déplacer le personnage vers la gauche
+    public KeyCode moveRightKey = KeyCode.RightArrow; // Touche pour déplacer le personnage vers la droite
+    public KeyCode jumpKey = KeyCode.Space; // Touche pour sauter
 
-    private bool isSwimming = false; // Indique si le personnage est en train de nager
+    private Rigidbody2D rb;
+    private bool isGrounded;
 
-    void OnTriggerEnter(Collider other)
+    void Start()
     {
-        if (other.CompareTag("Water"))
-        {
-            isSwimming = true; // Activer le mode de nage lorsque le personnage entre dans l'eau
-        }
-    }
-
-    void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Water"))
-        {
-            isSwimming = false; // Désactiver le mode de nage lorsque le personnage quitte l'eau
-        }
+        rb = GetComponent<Rigidbody2D>(); // Initialisation du composant Rigidbody2D
     }
 
     void Update()
     {
-        if (isSwimming)
+        // Déplacement horizontal
+        float moveInput = 0f;
+        if (Input.GetKey(moveLeftKey))
         {
-            // Gérer les contrôles de nage ici
-            float verticalInput = Input.GetAxis("Vertical");
-            float horizontalInput = Input.GetAxis("Horizontal");
+            moveInput = -1f;
+        }
+        else if (Input.GetKey(moveRightKey))
+        {
+            moveInput = 1f;
+        }
 
-            Vector3 swimDirection = new Vector3(horizontalInput, 0f, verticalInput).normalized;
-            transform.Translate(swimDirection * swimSpeed * Time.deltaTime);
+        rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y);
 
-            // Gérer la montée et la descente dans l'eau
-            if (Input.GetKey(KeyCode.Space))
-            {
-                transform.Translate(Vector3.up * riseSpeed * Time.deltaTime);
-            }
-            else if (Input.GetKey(KeyCode.LeftShift))
-            {
-                transform.Translate(Vector3.down * descentSpeed * Time.deltaTime);
-            }
+        // Saut
+        if (Input.GetKeyDown(jumpKey) && isGrounded)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+        }
+
+        // Mise à jour des animations
+        animator.SetFloat("VerticalSpeed", rb.velocity.y);
+        if (moveInput != 0)
+        {
+            animator.SetBool("Run", true);
+            transform.localScale = new Vector3(moveInput, 1f, 1f); // Ajuste l'échelle du personnage pour qu'il regarde dans la bonne direction
+        }
+        else
+        {
+            animator.SetBool("Run", false);
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        // Vérifie si le personnage touche le sol
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            isGrounded = true;
+        }
+    }
+
+    void OnCollisionExit2D(Collision2D collision)
+    {
+        // Vérifie si le personnage n'est plus en contact avec le sol
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            isGrounded = false;
         }
     }
 }
