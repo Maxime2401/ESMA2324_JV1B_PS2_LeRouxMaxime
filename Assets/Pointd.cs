@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CharacterMovement : MonoBehaviour
+public class CharacterMovements : MonoBehaviour
 {
     // Déclaration des variables pour les points de destination et les paramètres de mouvement
     public GameObject[] targetPoints; // Tableau des points de destination en tant que GameObject

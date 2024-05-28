@@ -1,16 +1,16 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Inventaire : MonoBehaviour
 {
     public int coinsCount;
-    public Text CountText;
+    private Text countText;
 
     public static Inventaire instance;
 
     private void Awake()
-    { 
-        CountText = GameObject.Find("Textpiece").GetComponent<Text>();
+    {
         if (instance == null)
         {
             instance = this;
@@ -19,12 +19,57 @@ public class Inventaire : MonoBehaviour
         else
         {
             Destroy(gameObject); // Détruire les doublons
+            return;
         }
+
+        // Recherche automatique du Text dans la hiérarchie de la scène
+        countText = FindObjectOfType<Text>();
+
+        if (countText == null)
+        {
+            Debug.LogError("Text component is not found in the scene!");
+        }
+
+        // Écouter l'événement de chargement de scène pour mettre à jour le Text lorsqu'une nouvelle scène est chargée
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
-    public void AddCoins(int count) // permet d'ajouter les goutes en UI
+    private void OnDestroy()
+    {
+        // Retirer l'écouteur de l'événement de chargement de scène lors de la destruction de l'objet
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // Recherche à nouveau du Text dans la hiérarchie de la nouvelle scène
+        countText = FindObjectOfType<Text>();
+
+        if (countText == null)
+        {
+            Debug.LogError("Text component is not found in the scene!");
+        }
+
+        // Mettre à jour le Text avec le nombre actuel de pièces
+        UpdateCoinsText();
+    }
+
+    public void AddCoins(int count) // permet d'ajouter les pièces en UI
     {
         coinsCount += count;
-        CountText.text = coinsCount.ToString();
+        UpdateCoinsText();
+    }
+
+    private void UpdateCoinsText()
+    {
+        // Mettre à jour le Text avec le nombre actuel de pièces
+        if (countText != null)
+        {
+            countText.text = coinsCount.ToString();
+        }
+        else
+        {
+            Debug.LogError("Text component is not assigned!");
+        }
     }
 }
