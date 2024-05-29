@@ -16,6 +16,9 @@ public class barvi : MonoBehaviour
     public float transitionDuration = 1f; // Durée de la transition
     public Animator animator; // Référence à l'Animator
 
+    public GameObject itemToReset; // L'objet à réinitialiser
+    private Vector3 initialItemPosition; // La position initiale de l'objet
+
     void Start()
     {
         SetInitialSpawnPosition();
@@ -26,6 +29,11 @@ public class barvi : MonoBehaviour
         if (transitionCircle != null)
         {
             transitionCircle.rectTransform.localScale = Vector3.zero;
+        }
+
+        if (itemToReset != null)
+        {
+            initialItemPosition = itemToReset.transform.position;
         }
     }
 
@@ -110,6 +118,11 @@ public class barvi : MonoBehaviour
         transform.position = respawnPosition; // Téléporter le joueur à la position de respawn
         currentHealth = maxHealth; // Réinitialiser la vie du joueur
         HealthBar.SetHealth(currentHealth);
+
+        if (itemToReset != null)
+        {
+            itemToReset.transform.position = initialItemPosition; // Réinitialiser la position de l'objet
+        }
     }
 
     void OnTriggerEnter2D(Collider2D other)

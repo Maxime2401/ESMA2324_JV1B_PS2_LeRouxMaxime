@@ -13,7 +13,7 @@ public class ChargeBehavior : MonoBehaviour
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
     private Collider2D col;
-    private bool isCharging = false;
+    private bool isCharging = false; // Indique si l'objet est en train de charger
 
     void Start()
     {
@@ -79,7 +79,7 @@ public class ChargeBehavior : MonoBehaviour
             int randomIndex = Random.Range(0, teleportPoints.Length);
             Transform chosenPoint = teleportPoints[randomIndex];
             
-            // Réactiver le sprite et le collider avant de téléporter l'obje
+            // Réactiver le sprite et le collider avant de téléporter l'objet
 
             // Téléporter le GameObject au point de téléportation choisi
             Vector3 newPosition = chosenPoint.position;
@@ -87,6 +87,6 @@ public class ChargeBehavior : MonoBehaviour
             transform.position = newPosition;
         }
 
-        isCharging = false;
+        isCharging = false; // Mettre fin au chargement une fois terminé
     }
 }

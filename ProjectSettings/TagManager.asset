@@ -17,6 +17,7 @@ TagManager:
   - Wallgauche
   - Walldroit
   - Dommage
+  - SpecialObject
   layers:
   - Default
   - TransparentFX
