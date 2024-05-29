@@ -117,9 +117,9 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.00000011920929, y: -0.000000029802322}
+  m_Offset: {x: -0.014568441, y: 0.006539521}
   serializedVersion: 2
-  m_Radius: 0.50000006
+  m_Radius: 0.38047102
 --- !u!1 &8450585999261523714
 GameObject:
   m_ObjectHideFlags: 0
@@ -132,7 +132,7 @@ GameObject:
   - component: {fileID: 6127564791149037914}
   - component: {fileID: 8570329916816343480}
   m_Layer: 0
-  m_Name: Circle
+  m_Name: cri
   m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -147,7 +147,7 @@ Transform:
   m_GameObject: {fileID: 8450585999261523714}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.04, y: -0, z: 0}
+  m_LocalPosition: {x: 0, y: -0, z: 0}
   m_LocalScale: {x: 18.647282, y: 35.71424, z: 24.914255}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -257,6 +257,8 @@ GameObject:
   - component: {fileID: 7595821460753677678}
   - component: {fileID: 1059345302445873984}
   - component: {fileID: 4158974167686862637}
+  - component: {fileID: 4190619724403896926}
+  - component: {fileID: 2048500061151694313}
   m_Layer: 0
   m_Name: Capibara
   m_TagString: Player
@@ -274,7 +276,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -17.44, y: -2.89, z: 0}
-  m_LocalScale: {x: 1.3360797, y: 0.6976, z: 1}
+  m_LocalScale: {x: -1.389523, y: 1.4043292, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8163800328216980766}
@@ -322,12 +324,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.4113207, g: 0.2568814, b: 0.2568814, a: 1}
+  m_Sprite: {fileID: 1457070279, guid: bbf877601e04c65429f63c61cfd57b02, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.35, y: 1.35}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -365,18 +367,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.20252213}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
+    oldSize: {x: 1.35, y: 1.35}
+    newSize: {x: 1.35, y: 1.35}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1, y: 0.9035283}
   m_EdgeRadius: 0
 --- !u!50 &8708991809370093752
 Rigidbody2D:
@@ -390,7 +392,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 3.72
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -404,7 +406,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &9054128781360921696
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -424,6 +426,10 @@ MonoBehaviour:
   maxJumpForce: 9.94
   jumpTimeThreshold: 1.22
   groundCheck: {fileID: 0}
+  captGauche: {fileID: 0}
+  captDroit: {fileID: 0}
+  droite: 1
+  gauche: 1
 --- !u!114 &9153317959720384208
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -455,8 +461,15 @@ MonoBehaviour:
   mounts:
   - {fileID: 0}
   - {fileID: 0}
-  mountAttachDistance: 2.68
-  mountAttachOffset: {x: 0, y: 0.95, z: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  mountAttachDistance: 2.26
+  mountAttachOffset: {x: 0, y: 1.41, z: 0}
+  playerControllerScript: {fileID: 9054128781360921696}
+  Cri: {fileID: 9153317959720384208}
+  suivicou: {fileID: 0}
+  mountControllerScript: {fileID: 0}
+  additionalScripts: []
 --- !u!114 &1059345302445873984
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -469,9 +482,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3eec5afc6374f4b49a19eecde186efe9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swimSpeed: 2
-  riseSpeed: 1
-  descentSpeed: 1
+  moveSpeed: 5
+  maxHorizontalSpeed: 3
+  jumpForce: 2.27
+  floatForce: 2.81
+  animator: {fileID: 0}
+  moveLeftKey: 276
+  moveRightKey: 275
+  jumpKey: 273
 --- !u!114 &4158974167686862637
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -484,12 +502,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 735d46e4da9105649b29f8c9b8041bdb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 10
+  maxHealth: 3
   currentHealth: 0
-  health: 0
   invincibleflashdelay: 0.1
   invincible: 0
   respawnPosition: {x: 0, y: 0, z: 0}
   graphics: {fileID: 1271111979052374338}
   HealthBar: {fileID: 0}
   currentCheckpoint: {fileID: 0}
+  transitionCircle: {fileID: 0}
+  transitionDuration: 2
+  animator: {fileID: 4190619724403896926}
+--- !u!95 &4190619724403896926
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9045201694776350754}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 389e4d38ae0d6cd41a8fcfdda2b8ac34, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &2048500061151694313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9045201694776350754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52f6e33419e12ad4f94e6976b2ed02f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetObject: {fileID: 0}
+  scriptsToDisable:
+  - {fileID: 9054128781360921696}
+  scriptsToEnable:
+  - {fileID: 1059345302445873984}
