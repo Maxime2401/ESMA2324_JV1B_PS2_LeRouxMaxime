@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 public class Inventaire : MonoBehaviour
 {
     public int coinsCount;
-    private Text countText;
+    public Text countText;
 
     public static Inventaire instance;
 
@@ -21,9 +21,6 @@ public class Inventaire : MonoBehaviour
             Destroy(gameObject); // Détruire les doublons
             return;
         }
-
-        // Recherche automatique du Text dans la hiérarchie de la scène
-        countText = FindObjectOfType<Text>();
 
         if (countText == null)
         {
@@ -42,8 +39,6 @@ public class Inventaire : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // Recherche à nouveau du Text dans la hiérarchie de la nouvelle scène
-        countText = FindObjectOfType<Text>();
 
         if (countText == null)
         {

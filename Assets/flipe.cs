@@ -5,6 +5,7 @@ public class ScaleByDirection : MonoBehaviour
     private float previousX;
     private Transform objectTransform;
     public float threshold = 0.1f; // Ajustez cette valeur selon vos besoins
+    public float scaleValue = 5f; // Valeur de l'échelle sur l'axe X
 
     void Start()
     {
@@ -22,16 +23,8 @@ public class ScaleByDirection : MonoBehaviour
         // Vérifier si le changement de position en X dépasse le seuil
         if (Mathf.Abs(currentX - previousX) >= threshold)
         {
-            // Si la position actuelle en X est supérieure à la précédente, mettre l'échelle sur l'axe X à 5
-            if (currentX > previousX)
-            {
-                objectTransform.localScale = new Vector3(5f, objectTransform.localScale.y, objectTransform.localScale.z);
-            }
-            // Sinon, si la position actuelle en X est inférieure à la précédente, mettre l'échelle sur l'axe X à -5
-            else if (currentX < previousX)
-            {
-                objectTransform.localScale = new Vector3(-5f, objectTransform.localScale.y, objectTransform.localScale.z);
-            }
+            // Appliquer l'échelle sur l'axe X en fonction de la direction
+            objectTransform.localScale = new Vector3((currentX > previousX) ? scaleValue : -scaleValue, objectTransform.localScale.y, objectTransform.localScale.z);
 
             // Mettre à jour la position précédente avec la position actuelle en X
             previousX = currentX;

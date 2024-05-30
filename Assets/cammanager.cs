@@ -30,7 +30,8 @@ public class CameraFollow : MonoBehaviour
 
     private Vector3 CalculateDesiredPosition()
     {
-        Vector3 desiredPosition = target.position + offset;
+        // Calculer la position désirée en utilisant seulement la position X du target et l'offset
+        Vector3 desiredPosition = new Vector3(target.position.x + offset.x, transform.position.y, transform.position.z);
 
         if (enableParabolicMovement)
         {
@@ -38,10 +39,10 @@ public class CameraFollow : MonoBehaviour
             float parabolicHeightFactor = Mathf.Clamp01(distanceToTarget / parabolicDuration);
             float height = Mathf.Lerp(0, parabolicHeight, parabolicHeightFactor);
 
-            Vector3 directionToTarget = (target.position - initialPosition).normalized;
             Vector3 parabolicOffset = Vector3.up * height * Mathf.Sin(parabolicHeightFactor * Mathf.PI);
 
-            desiredPosition += parabolicOffset;
+            // Ajouter l'offset parabolique uniquement à la composante Y
+            desiredPosition.y = transform.position.y + parabolicOffset.y;
         }
 
         return desiredPosition;

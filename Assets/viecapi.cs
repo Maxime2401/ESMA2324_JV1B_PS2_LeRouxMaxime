@@ -10,7 +10,7 @@ public class barvi : MonoBehaviour
     public bool invincible = false;
     public Vector3 respawnPosition; // Position de respawn
     public SpriteRenderer graphics;
-    public HealthBar HealthBar;
+    public HeartDisplay heartDisplay;
     public GameObject currentCheckpoint; // Référence au dernier checkpoint activé
     public Image transitionCircle; // Référence à l'image circulaire pour la transition
     public float transitionDuration = 1f; // Durée de la transition
@@ -23,8 +23,7 @@ public class barvi : MonoBehaviour
     {
         SetInitialSpawnPosition();
         currentHealth = maxHealth;
-        HealthBar.SetMaxHealth(maxHealth);
-        HealthBar.SetHealth(currentHealth);
+        heartDisplay.UpdateHearts(currentHealth);
 
         if (transitionCircle != null)
         {
@@ -57,7 +56,7 @@ public class barvi : MonoBehaviour
         {
             currentHealth = maxHealth;
         }
-        HealthBar.SetHealth(currentHealth);
+        heartDisplay.UpdateHearts(currentHealth);
     }
 
     public void TakeDamage(int damage)
@@ -65,7 +64,7 @@ public class barvi : MonoBehaviour
         if (!invincible)
         {
             currentHealth -= damage;
-            HealthBar.SetHealth(currentHealth);
+            heartDisplay.UpdateHearts(currentHealth);
 
             if (currentHealth <= 0)
             {
@@ -117,7 +116,7 @@ public class barvi : MonoBehaviour
     {
         transform.position = respawnPosition; // Téléporter le joueur à la position de respawn
         currentHealth = maxHealth; // Réinitialiser la vie du joueur
-        HealthBar.SetHealth(currentHealth);
+        heartDisplay.UpdateHearts(currentHealth);
 
         if (itemToReset != null)
         {

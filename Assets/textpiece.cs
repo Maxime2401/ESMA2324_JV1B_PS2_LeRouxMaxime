@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TextePiecesss : MonoBehaviour
+public class TextePiecess : MonoBehaviour
 {
     public Text texte;
 

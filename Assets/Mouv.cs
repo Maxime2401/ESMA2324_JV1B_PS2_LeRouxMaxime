@@ -9,8 +9,6 @@ public class BasicCharacterController : MonoBehaviour
     public float maxJumpForce = 20f; // Force de saut maximale du personnage
     public float jumpTimeThreshold = 0.5f; // Durée minimale de maintien de la touche de saut pour un saut maximal
     public Transform groundCheck; // Transform de vérification du sol
-    public Collider2D captGauche;
-    public Collider2D captDroit;
 
     private Rigidbody2D rb;
     private bool isGrounded;
@@ -193,29 +191,11 @@ public class BasicCharacterController : MonoBehaviour
             {
                 animator.SetBool("Fall", false);
             }
-        }
-
-        if (collision.collider == captGauche && collision.gameObject.CompareTag("Wall"))
-        {
-            gauche = false;
-        }
-
-        if (collision.collider == captDroit && collision.gameObject.CompareTag("Wall"))
-        {
-            droite = false;
+            if (animator != null)
+            {
+                animator.SetBool("Sol", true);
+            }
         }
     }
 
-    void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.collider == captGauche && collision.gameObject.CompareTag("Wall"))
-        {
-            gauche = true;
-        }
-
-        if (collision.collider == captDroit && collision.gameObject.CompareTag("Wall"))
-        {
-            droite = true;
-        }
-    }
 }
