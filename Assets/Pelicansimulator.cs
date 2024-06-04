@@ -11,12 +11,15 @@ public class PlayerController : MonoBehaviour
     public float drainRate = 20f; // Taux de vidange de la barre de vol lorsque le joueur vole
 
     private bool isGrounded = false; // Indique si le joueur touche le sol
+    private bool isMoving = false; // Indique si le joueur se déplace horizontalement
     private Rigidbody2D rb; // Référence au Rigidbody2D
     private float currentFlightDuration = 0f; // Durée de vol actuelle
+    private Animator animator; // Référence à l'Animator
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>(); // Obtient le Rigidbody2D
+        animator = GetComponent<Animator>(); // Obtient l'Animator
         InitializeFlightDurationSlider();
         ToggleFlightDurationSlider(true); // Activer la barre de durée de vol au démarrage
     }
@@ -39,12 +42,12 @@ public class PlayerController : MonoBehaviour
         if (currentFlightDuration > 0)
         {
             // Si la durée de vol est supérieure à zéro, le joueur peut voler
-            
             HandleVerticalMovement(); // Gérer le mouvement vertical (haut/bas)
         }
 
         UpdateFlightDurationSlider();
         UpdateSliderPosition();
+        UpdateAnimator();
     }
 
     void HandleHorizontalMovement()
@@ -52,6 +55,9 @@ public class PlayerController : MonoBehaviour
         float horizontalInput = Input.GetAxis("Horizontal");
         Vector2 movement = new Vector2(horizontalInput, 0f) * moveSpeed;
         rb.velocity = new Vector2(movement.x, rb.velocity.y);
+        
+        // Met à jour le booléen isMoving
+        isMoving = horizontalInput != 0;
     }
 
     void HandleVerticalMovement()
@@ -132,5 +138,15 @@ public class PlayerController : MonoBehaviour
     void OnDisable()
     {
         ToggleFlightDurationSlider(false); // Désactiver la barre de durée de vol lorsque le script est désactivé
+    }
+
+    void UpdateAnimator()
+    {
+        if (animator != null)
+        {
+            animator.SetBool("isGrounded", isGrounded);
+            animator.SetBool("isFlying", !isGrounded && currentFlightDuration > 0);
+            animator.SetBool("isMoving", isGrounded && isMoving);
+        }
     }
 }

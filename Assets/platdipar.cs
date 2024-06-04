@@ -2,35 +2,50 @@ using UnityEngine;
 
 public class DisappearAndReappear : MonoBehaviour
 {
-    public float disappearTime = 3f; // Time in seconds before the GameObject disappears after being touched by the player
-    public float reappearDelay = 5f; // Delay in seconds before the GameObject reappears
-    private bool isDisabled = false; // Indicates if the GameObject is disabled
+    public float disappearTime = 3f; // Temps en secondes avant que l'objet disparaisse après avoir été touché par le joueur
+    public float reappearDelay = 5f; // Délai en secondes avant que l'objet réapparaisse
+    public string touchBoolName; // Nom du booléen pour l'animation de toucher
+    public string disappearBoolName; // Nom du booléen pour l'animation de disparition
+
+    private bool isDisabled = false; // Indique si l'objet est désactivé
+    private Animator animator; // Référence au composant Animator
 
     void Start()
     {
-        isDisabled = false; // Ensure the GameObject starts enabled
+        isDisabled = false; // S'assurer que l'objet commence activé
+        animator = GetComponent<Animator>(); // Obtenir le composant Animator
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
-            Invoke("Disappear", disappearTime); // Schedule the GameObject to disappear after the specified time
+            animator.SetBool(touchBoolName, true); // Activer le booléen pour l'animation de toucher
+            Invoke("PlayDisappearAnimation", disappearTime - 0.35f); // Programmer l'animation de disparition
+            Invoke("Disappear", disappearTime); // Programmer la disparition de l'objet après le temps spécifié
         }
     }
 
-    // Function to disable the GameObject
-    void Disappear()
+    // Fonction pour jouer l'animation de disparition
+    void PlayDisappearAnimation()
     {
-        gameObject.SetActive(false); // Disable the GameObject
-        isDisabled = true; // Mark the GameObject as disabled
-        Invoke("Reappear", reappearDelay); // Schedule the GameObject to reappear after the specified delay
+        animator.SetBool(disappearBoolName, true); // Activer le booléen pour l'animation de disparition
     }
 
-    // Function to re-enable the GameObject
+    // Fonction pour désactiver l'objet
+    void Disappear()
+    {
+        animator.SetBool(touchBoolName, false); // Désactiver le booléen pour l'animation de toucher
+        animator.SetBool(disappearBoolName, false); // Désactiver le booléen pour l'animation de disparition
+        gameObject.SetActive(false); // Désactiver l'objet
+        isDisabled = true; // Marquer l'objet comme désactivé
+        Invoke("Reappear", reappearDelay); // Programmer la réapparition de l'objet après le délai spécifié
+    }
+
+    // Fonction pour réactiver l'objet
     void Reappear()
     {
-        gameObject.SetActive(true); // Re-enable the GameObject
-        isDisabled = false; // Mark the GameObject as enabled
+        gameObject.SetActive(true); // Réactiver l'objet
+        isDisabled = false; // Marquer l'objet comme activé
     }
 }

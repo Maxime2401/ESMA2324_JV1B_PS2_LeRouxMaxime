@@ -1,28 +1,28 @@
 using UnityEngine;
 using System.Collections;
 
-public class HalfTurnObject : MonoBehaviour
+public class FullTurnObject : MonoBehaviour
 {
-    public float minInterval = 2f; // Intervalle minimum entre chaque demi-tour
-    public float maxInterval = 5f; // Intervalle maximum entre chaque demi-tour
+    public float minInterval = 2f; // Intervalle minimum entre chaque tour complet
+    public float maxInterval = 5f; // Intervalle maximum entre chaque tour complet
 
-    private bool isTurning = false; // Indique si l'objet est en train d'effectuer un demi-tour
+    private bool isTurning = false; // Indique si l'objet est en train d'effectuer un tour complet
 
     void Start()
     {
-        // Démarre la routine pour effectuer des demi-tours
-        StartCoroutine(PerformHalfTurns());
+        // Démarre la routine pour effectuer des tours complets
+        StartCoroutine(PerformFullTurns());
     }
 
-    IEnumerator PerformHalfTurns()
+    IEnumerator PerformFullTurns()
     {
         while (true)
         {
-            // Attendre un intervalle aléatoire avant d'effectuer le prochain demi-tour
+            // Attendre un intervalle aléatoire avant d'effectuer le prochain tour complet
             float interval = Random.Range(minInterval, maxInterval);
             yield return new WaitForSeconds(interval);
 
-            // Si l'objet n'est pas déjà en train de tourner, commence un demi-tour
+            // Si l'objet n'est pas déjà en train de tourner, commence un tour complet
             if (!isTurning)
             {
                 StartCoroutine(TurnObject());
@@ -34,21 +34,20 @@ public class HalfTurnObject : MonoBehaviour
     {
         isTurning = true;
 
-        // Tourner l'objet de 180 degrés sur l'axe Z
-        Quaternion startRotation = transform.rotation;
-        Quaternion endRotation = startRotation * Quaternion.Euler(0f, 0f, 180f);
-        float duration = 0.5f; // Durée du demi-tour
+        // Tourner l'objet de 360 degrés sur l'axe Z
+        float duration = 1f; // Durée du tour complet
         float elapsed = 0f;
 
         while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
-            transform.rotation = Quaternion.Slerp(startRotation, endRotation, elapsed / duration);
+            float angle = Mathf.Lerp(0f, 360f, elapsed / duration);
+            transform.rotation = Quaternion.Euler(0f, 0f, -angle);
             yield return null;
         }
 
-        // Mettre à jour la rotation finale pour éviter les erreurs d'arrondi
-        transform.rotation = endRotation;
+        // S'assurer que l'objet revient à sa rotation initiale après un tour complet
+        transform.rotation = Quaternion.Euler(0f, 0f, 0f);
 
         isTurning = false;
     }
