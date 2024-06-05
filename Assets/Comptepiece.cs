@@ -39,7 +39,6 @@ public class Inventaire : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-
         if (countText == null)
         {
             Debug.LogError("Text component is not found in the scene!");
@@ -52,6 +51,16 @@ public class Inventaire : MonoBehaviour
     public void AddCoins(int count) // permet d'ajouter les pièces en UI
     {
         coinsCount += count;
+        UpdateCoinsText();
+    }
+
+    public void RemoveCoins(int count) // Permet de retirer les pièces en UI
+    {
+        coinsCount -= count;
+        if (coinsCount < 0)
+        {
+            coinsCount = 0; // Assurer que le nombre de pièces ne devient pas négatif
+        }
         UpdateCoinsText();
     }
 

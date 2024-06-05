@@ -345,6 +345,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4574680423430835870, guid: e3fee2583c2cf524181df1815d459395, type: 3}
+      propertyPath: sceneName
+      value: Niveau 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4581623793821469930, guid: e3fee2583c2cf524181df1815d459395, type: 3}
       propertyPath: m_SizeDelta.x
       value: 1920
