@@ -10,20 +10,31 @@ public class cricou : MonoBehaviour
 
     private float angleCible;
     private int etatCou; // 0: baissé, 1: milieu, 2: levé
+    private KeyBindingsManager keyBindingsManager; // Référence au KeyBindingsManager
 
     void Start()
     {
         etatCou = 0; // Commence avec le cou baissé
         angleCible = angleBaisse;
+        keyBindingsManager = FindObjectOfType<KeyBindingsManager>();
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        if (keyBindingsManager == null)
+        {
+            return;
+        }
+
+        // Récupérer les touches assignées pour les actions "Jump" et "Capa1"
+        KeyCode jumpKey = keyBindingsManager.GetKeyCodeForAction("Jump");
+        KeyCode capa1Key = keyBindingsManager.GetKeyCodeForAction("Capa1");
+
+        if (jumpKey != KeyCode.None && Input.GetKeyDown(jumpKey))
         {
             MonterCou();
         }
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        else if (capa1Key != KeyCode.None && Input.GetKeyDown(capa1Key))
         {
             DescendreCou();
         }

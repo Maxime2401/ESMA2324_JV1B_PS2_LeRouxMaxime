@@ -4,8 +4,8 @@ using System.Collections.Generic;
 
 public class MountInteraction : MonoBehaviour
 {
-    public bool peuxsata = false;
-    public KeyCode interactKey = KeyCode.H; // Touche pour interagir avec la monture
+    private KeyBindingsManager keyBindingsManager;
+    public bool peuxsata = false; // Touche pour interagir avec la monture
     public List<GameObject> mounts = new List<GameObject>(); // Liste des montures
     public float mountAttachDistance = 1.5f; // Distance à laquelle le joueur sera attaché à la monture
     public Vector3 mountAttachOffset = new Vector3(0f, 0.5f, 0f); // Offset pour ajuster la position du joueur sur la monture
@@ -19,7 +19,8 @@ public class MountInteraction : MonoBehaviour
     private Transform currentMount; // Référence à la monture actuelle
 
     void Start()
-    {
+    {   
+        keyBindingsManager = FindObjectOfType<KeyBindingsManager>();
         if (playerControllerScript == null || mountControllerScript == null)
         {
             Debug.LogError("PlayerControllerScript ou MountControllerScript n'a pas été défini.");
@@ -28,16 +29,23 @@ public class MountInteraction : MonoBehaviour
 
     void Update()
     {
-        // Vérifie si la touche d'interaction est enfoncée et que le joueur est en collision avec peuxsata
-        if (Input.GetKeyDown(interactKey) && peuxsata)
+        if (keyBindingsManager == null)
         {
-            if (isAttached)
+            return;
+        }
+        
+        if (keyBindingsManager.GetKeyCodeForAction("Monter") != KeyCode.None)// Si le joueur appuie sur une touche pour faire crier le capybara
+        {    // Vérifie si la touche d'interaction est enfoncée et que le joueur est en collision avec peuxsata
+            if (Input.GetKeyDown(keyBindingsManager.GetKeyCodeForAction("Monter")) && peuxsata)
             {
-                DetachFromMount(); // Si le joueur est déjà attaché, détache-le
-            }
-            else
-            {
-                StartCoroutine(AttachToMount()); // Sinon, attache-le à la monture
+                if (isAttached)
+                {
+                    DetachFromMount(); // Si le joueur est déjà attaché, détache-le
+                }
+                else
+                {
+                    StartCoroutine(AttachToMount()); // Sinon, attache-le à la monture
+                }
             }
         }
     }

@@ -6,9 +6,10 @@ public class CapybaraController : MonoBehaviour
     public GameObject objectToSpawn2; // Référence au deuxième objet à faire apparaître
     public AudioClip screamSound; // Son du cri du capybara
     public AudioSource audioSource; // Référence à l'AudioSource du capybara
-
+    private KeyBindingsManager keyBindingsManager;
     void Start()
     {
+        keyBindingsManager = FindObjectOfType<KeyBindingsManager>();
         audioSource = GetComponent<AudioSource>(); // Obtenez la référence à l'AudioSource
         if (audioSource == null)
         {
@@ -18,12 +19,19 @@ public class CapybaraController : MonoBehaviour
 
     void Update()
     {
-        // Si le joueur appuie sur une touche pour faire crier le capybara
-        if (Input.GetKeyDown(KeyCode.C))
+        if (keyBindingsManager == null)
         {
-            Debug.Log("C key pressed. Attempting to scream.");
+            return;
+        }
+        
+        if (keyBindingsManager.GetKeyCodeForAction("Cri") != KeyCode.None)// Si le joueur appuie sur une touche pour faire crier le capybara
+        {    
+            if (Input.GetKey(keyBindingsManager.GetKeyCodeForAction("Cri")))
+            {
+             Debug.Log("C key pressed. Attempting to scream.");
             // Faites crier le capybara
-            Scream();
+                Scream();
+            }
         }
     }
 

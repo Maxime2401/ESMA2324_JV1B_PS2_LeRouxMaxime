@@ -10,11 +10,13 @@ public class MountMovement : MonoBehaviour
     private float initialPositionX;
     private bool moveRight = true;
     public GameObject objectToSpawn; // GameObject à faire apparaître
+    private KeyBindingsManager keyBindingsManager;
     private bool isVPressed = false; // Indique si la touche "V" est enfoncée
     private float spawnTimer = 1f; // Durée pendant laquelle l'objet apparaîtra
 
     void Start()
-    {
+    {   
+        keyBindingsManager = FindObjectOfType<KeyBindingsManager>();
         // Récupérer l'Animator à partir de l'objet assigné
         if (animatorObject != null)
         {
@@ -31,16 +33,23 @@ public class MountMovement : MonoBehaviour
 
     void Update()
     {
-        // Contrôles au clavier
-        float horizontalInput = Input.GetAxis("Horizontal");
-
-        if (horizontalInput > 0)
+        if (keyBindingsManager == null)
         {
-            moveRight = true;
+            return;
         }
-        else if (horizontalInput < 0)
+
+        KeyCode moveLeftKey = keyBindingsManager.GetKeyCodeForAction("MoveLeft");
+        KeyCode moveRightKey = keyBindingsManager.GetKeyCodeForAction("MoveRight");
+        KeyCode capa1Key = keyBindingsManager.GetKeyCodeForAction("Capa1");
+
+        // Contrôles au clavier
+        if (moveLeftKey != KeyCode.None && Input.GetKey(moveLeftKey))
         {
             moveRight = false;
+        }
+        else if (moveRightKey != KeyCode.None && Input.GetKey(moveRightKey))
+        {
+            moveRight = true;
         }
 
         // Déplacement de la monture
@@ -56,8 +65,8 @@ public class MountMovement : MonoBehaviour
             }
         }
 
-        // Gestion de l'apparition de l'objet
-        if (Input.GetKeyDown(KeyCode.V))
+        // Capacité spéciale
+        if (capa1Key != KeyCode.None && Input.GetKeyDown(capa1Key))
         {
             if (animator != null)
             {

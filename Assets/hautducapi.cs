@@ -21,13 +21,15 @@ public class GirafeController : MonoBehaviour
     void Update()
     {
         if (isFollowing && !EstProcheDeLaTete(capybara.position))
-        {
-            
+        {    
             // Calculer la direction du capybara par rapport au cou de la girafe
             Vector3 direction = capybara.position - cou.position;
 
             // Calculer l'angle entre la direction et l'axe horizontal
             float angleCible = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+            // Limiter l'angle cible à un maximum de 50 degrés
+            angleCible = Mathf.Clamp(angleCible, -50f, 50f);
 
             // Appliquer la rotation en douceur au cou de la girafe
             Quaternion rotationCible = Quaternion.Euler(0, 0, angleCible);
@@ -41,7 +43,6 @@ public class GirafeController : MonoBehaviour
         }
         else
         {
-            
             isFollowing = false;
         }
     }

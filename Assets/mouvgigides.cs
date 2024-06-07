@@ -10,16 +10,37 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
     private float horizontalMove = 0f;
     private Vector3 velocity = Vector3.zero;
+    private KeyBindingsManager keyBindingsManager; // Référence au KeyBindingsManager
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        keyBindingsManager = FindObjectOfType<KeyBindingsManager>();
     }
 
     void Update()
     {
-        // Récupérer l'entrée horizontale (gauche/droite)
-        horizontalMove = Input.GetAxisRaw("Horizontal") * moveSpeed;
+        if (keyBindingsManager == null)
+        {
+            return;
+        }
+
+        // Récupérer les touches assignées pour les mouvements gauche et droite
+        KeyCode moveLeftKey = keyBindingsManager.GetKeyCodeForAction("MoveLeft");
+        KeyCode moveRightKey = keyBindingsManager.GetKeyCodeForAction("MoveRight");
+
+        // Initialiser horizontalMove à 0
+        horizontalMove = 0f;
+
+        // Vérifier si les touches sont enfoncées et ajuster horizontalMove en conséquence
+        if (moveLeftKey != KeyCode.None && Input.GetKey(moveLeftKey))
+        {
+            horizontalMove = -moveSpeed;
+        }
+        else if (moveRightKey != KeyCode.None && Input.GetKey(moveRightKey))
+        {
+            horizontalMove = moveSpeed;
+        }
     }
 
     void FixedUpdate()

@@ -3,8 +3,8 @@ using UnityEngine.UI;
 
 public class ActivateObjectOnButtonPress : MonoBehaviour
 {
-    public GameObject targetObject; // L'objet à activer
-    public Button activateButton; // Le bouton qui déclenche l'activation
+    public GameObject targetObject; // L'objet à activer/désactiver
+    public Button activateButton; // Le bouton qui déclenche l'activation/désactivation
 
     void Start()
     {
@@ -12,7 +12,7 @@ public class ActivateObjectOnButtonPress : MonoBehaviour
         if (activateButton != null && targetObject != null)
         {
             // Ajouter un listener pour le bouton
-            activateButton.onClick.AddListener(ActivateTargetObject);
+            activateButton.onClick.AddListener(ToggleTargetObject);
         }
         else
         {
@@ -20,12 +20,14 @@ public class ActivateObjectOnButtonPress : MonoBehaviour
         }
     }
 
-    void ActivateTargetObject()
+    void ToggleTargetObject()
     {
         if (targetObject != null)
         {
-            targetObject.SetActive(true);
-            Debug.Log("Objet activé: " + targetObject.name);
+            // Bascule l'état actif de l'objet
+            bool isActive = targetObject.activeSelf;
+            targetObject.SetActive(!isActive);
+            Debug.Log("Objet " + (isActive ? "désactivé" : "activé") + ": " + targetObject.name);
         }
     }
 }

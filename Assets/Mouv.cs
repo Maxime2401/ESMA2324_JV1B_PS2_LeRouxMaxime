@@ -10,6 +10,12 @@ public class BasicCharacterController : MonoBehaviour
     public float jumpTimeThreshold = 0.5f; // Durée minimale de maintien de la touche de saut pour un saut maximal
     public Transform groundCheck; // Transform de vérification du sol
 
+    public AudioClip jumpSound; // Son du saut
+    public AudioClip moveSound; // Son du déplacement
+    public AudioClip landingSound; // Son de l'atterrissage
+    public AudioClip chargingSound; // Son de chargement du saut
+    private AudioSource audioSource; // Référence à l'AudioSource pour jouer les sons
+
     private Rigidbody2D rb;
     private bool isGrounded;
     public bool droite = true;
@@ -32,6 +38,7 @@ public class BasicCharacterController : MonoBehaviour
         keyBindingsManager = FindObjectOfType<KeyBindingsManager>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        audioSource = GetComponent<AudioSource>();
 
         if (groundCheck == null)
         {
@@ -53,6 +60,10 @@ public class BasicCharacterController : MonoBehaviour
         {
             Debug.LogError("KeyBindingsManager n'est pas trouvé dans la scène.");
         }
+        if (audioSource == null)
+        {
+            Debug.LogError("AudioSource n'est pas trouvé sur ce GameObject.");
+        }
     }
 
     void Update()
@@ -70,7 +81,9 @@ public class BasicCharacterController : MonoBehaviour
 
         // Mise à jour des booléens d'ascension et de descente
         isAscending = verticalMovement > 0;
-        if (isDescending = verticalMovement < 0)
+        isDescending = verticalMovement < 0;
+
+        if (isDescending)
         {
             if (animator != null)
             {
@@ -113,6 +126,11 @@ public class BasicCharacterController : MonoBehaviour
                     animator.SetBool("Run", true);
                 }
                 spriteRenderer.flipX = moveInput < 0;
+                // Jouer le son de déplacement
+                if (audioSource != null && moveSound != null && !audioSource.isPlaying)
+                {
+                    audioSource.PlayOneShot(moveSound);
+                }
             }
             else
             {
@@ -139,6 +157,13 @@ public class BasicCharacterController : MonoBehaviour
                 {
                     isChargingJump = true;
                     jumpTime = 0f;
+
+                    // Jouer le son de chargement du saut
+                    if (audioSource != null && chargingSound != null)
+                    {
+                        audioSource.clip = chargingSound;
+                        audioSource.Play();
+                    }
                 }
             }
             else
@@ -159,6 +184,7 @@ public class BasicCharacterController : MonoBehaviour
                     {
                         animator.SetBool("Charge", false);
                     }
+                    audioSource.Stop();
                     Jump();
                 }
             }
@@ -174,6 +200,12 @@ public class BasicCharacterController : MonoBehaviour
 
         float jumpForce = Mathf.Lerp(minJumpForce, maxJumpForce, Mathf.Clamp01(jumpTime / jumpTimeThreshold));
         rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+
+        // Jouer le son de saut
+        if (audioSource != null && jumpSound != null)
+        {
+            audioSource.PlayOneShot(jumpSound);
+        }
 
         isChargingJump = false;
         hasJumped = true;
@@ -194,6 +226,12 @@ public class BasicCharacterController : MonoBehaviour
             if (animator != null)
             {
                 animator.SetBool("Sol", true);
+            }
+
+            // Jouer le son de l'atterrissage
+            if (audioSource != null && landingSound != null)
+            {
+                audioSource.PlayOneShot(landingSound);
             }
         }
     }

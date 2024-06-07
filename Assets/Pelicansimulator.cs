@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
+    private KeyBindingsManager keyBindingsManager;
     public float moveSpeed = 5f; // Vitesse de déplacement
     public Slider flightDurationSlider; // Référence au slider
     public Vector3 sliderOffset; // Offset pour positionner le slider au-dessus du joueur
@@ -18,6 +19,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        keyBindingsManager = FindObjectOfType<KeyBindingsManager>();
         rb = GetComponent<Rigidbody2D>(); // Obtient le Rigidbody2D
         animator = GetComponent<Animator>(); // Obtient l'Animator
         InitializeFlightDurationSlider();
@@ -25,7 +27,11 @@ public class PlayerController : MonoBehaviour
     }
 
     void Update()
-    {
+    {   
+        if (keyBindingsManager == null)
+        {
+            return;
+        }
         if (isGrounded)
         {
             RechargeFlight();
@@ -52,17 +58,46 @@ public class PlayerController : MonoBehaviour
 
     void HandleHorizontalMovement()
     {
-        float horizontalInput = Input.GetAxis("Horizontal");
+        if (keyBindingsManager == null)
+        {
+            return;
+        }
+        float horizontalInput = 0f;
+
+        // Utilisation du KeyBindingsManager pour obtenir les touches de déplacement gauche et droite
+        KeyCode moveLeftKey = keyBindingsManager.GetKeyCodeForAction("MoveLeft");
+        KeyCode moveRightKey = keyBindingsManager.GetKeyCodeForAction("MoveRight");
+
+        if (moveLeftKey != KeyCode.None && Input.GetKey(moveLeftKey))
+        {
+            horizontalInput = -1f;
+        }
+        else if (moveRightKey != KeyCode.None && Input.GetKey(moveRightKey))
+        {
+            horizontalInput = 1f;
+        }
+
         Vector2 movement = new Vector2(horizontalInput, 0f) * moveSpeed;
         rb.velocity = new Vector2(movement.x, rb.velocity.y);
-        
+
         // Met à jour le booléen isMoving
         isMoving = horizontalInput != 0;
     }
 
     void HandleVerticalMovement()
     {
-        float verticalInput = Input.GetAxis("Vertical");
+        float verticalInput = 0f;
+
+        // Utilisation de KeyCodes pour la gestion du mouvement vertical
+        if (Input.GetKey(keyBindingsManager.GetKeyCodeForAction("Jump")))
+        {
+            verticalInput = 1f; // Aller vers le haut
+        }
+        else if (Input.GetKey(keyBindingsManager.GetKeyCodeForAction("Capa1")))
+        {
+            verticalInput = -1f; // Aller vers le bas
+        }
+
         Vector2 movement = new Vector2(0f, verticalInput) * moveSpeed;
         rb.velocity = new Vector2(rb.velocity.x, movement.y);
     }

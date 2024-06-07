@@ -8,16 +8,18 @@ public class barvi : MonoBehaviour
     public int currentHealth;
     public float invincibleflashdelay = 0.1f;
     public bool invincible = false;
-    public Vector3 respawnPosition; // Position de respawn
+    public Vector3 respawnPosition; 
     public SpriteRenderer graphics;
     public HeartDisplay heartDisplay;
-    public GameObject currentCheckpoint; // Référence au dernier checkpoint activé
-    public Image transitionCircle; // Référence à l'image circulaire pour la transition
-    public float transitionDuration = 1f; // Durée de la transition
-    public Animator animator; // Référence à l'Animator
+    public GameObject currentCheckpoint;
+    public Image transitionCircle;
+    public float transitionDuration = 1f; 
+    public Animator animator;
+    public AudioClip damageSound; 
+    private AudioSource audioSource; 
 
-    public GameObject itemToReset; // L'objet à réinitialiser
-    private Vector3 initialItemPosition; // La position initiale de l'objet
+    public GameObject objectToReset; // Objet à réinitialiser
+    private Vector3 initialObjectPosition; // Position initiale de l'objet
 
     void Start()
     {
@@ -30,10 +32,10 @@ public class barvi : MonoBehaviour
             transitionCircle.rectTransform.localScale = Vector3.zero;
         }
 
-        if (itemToReset != null)
-        {
-            initialItemPosition = itemToReset.transform.position;
-        }
+        audioSource = GetComponent<AudioSource>();
+        audioSource.clip = damageSound;
+
+        initialObjectPosition = objectToReset.transform.position; // Stocke la position initiale de l'objet
     }
 
     void SetInitialSpawnPosition()
@@ -68,27 +70,28 @@ public class barvi : MonoBehaviour
 
             if (currentHealth <= 0)
             {
-                animator.SetBool("isDead", true); // Déclencher l'animation de mort
-                StartCoroutine(HandleTeleportationWithTransition(2f)); // Attendre 2 secondes avant de téléporter avec transition
+                animator.SetBool("isDead", true); 
+                StartCoroutine(HandleTeleportationWithTransition(2f)); 
             }
             else
             {
                 StartCoroutine(EnableInvincibilityWithDelay());
+            }
+
+            if (damageSound != null)
+            {
+                audioSource.Play();
             }
         }
     }
 
     IEnumerator HandleTeleportationWithTransition(float delay)
     {
-        // Démarrer la transition circulaire entrante
-
-        // Attendre le délai avant de téléporter
         yield return new WaitForSeconds(delay);
         yield return StartCoroutine(ScaleTransitionCircle(Vector3.one, transitionDuration));
         animator.SetBool("isDead", false);
+        ResetObject(); // Réinitialise l'objet à sa position initiale
         TeleportPlayer();
-
-        // Démarrer la transition circulaire sortante
         yield return StartCoroutine(ScaleTransitionCircle(Vector3.zero, transitionDuration));
     }
 
@@ -114,14 +117,9 @@ public class barvi : MonoBehaviour
 
     void TeleportPlayer()
     {
-        transform.position = respawnPosition; // Téléporter le joueur à la position de respawn
-        currentHealth = maxHealth; // Réinitialiser la vie du joueur
+        transform.position = respawnPosition;
+        currentHealth = maxHealth;
         heartDisplay.UpdateHearts(currentHealth);
-
-        if (itemToReset != null)
-        {
-            itemToReset.transform.position = initialItemPosition; // Réinitialiser la position de l'objet
-        }
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -135,13 +133,11 @@ public class barvi : MonoBehaviour
     IEnumerator EnableInvincibilityWithDelay()
     {
         yield return new WaitForSeconds(0.1f);
-
         invincible = true;
         StartCoroutine(invincibleFlash());
-
         yield return new WaitForSeconds(2f);
         invincible = false;
-        animator.SetBool("isDead", false); // Désactiver l'animation de mort
+        animator.SetBool("isDead", false); 
     }
 
     IEnumerator invincibleFlash()
@@ -159,5 +155,10 @@ public class barvi : MonoBehaviour
     {
         currentCheckpoint = checkpoint;
         respawnPosition = checkpoint.transform.position;
+    }
+
+    void ResetObject()
+    {
+        objectToReset.transform.position = initialObjectPosition; // Réinitialise l'objet à sa position initiale
     }
 }

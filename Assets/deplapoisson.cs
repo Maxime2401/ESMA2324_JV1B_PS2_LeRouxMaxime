@@ -52,7 +52,7 @@ public class FishMovement : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Boundary") && !isReversingDirection && Time.time > lastReverseTime + reverseDirectionDelay)
+        if (other.CompareTag("Boundary") )
         {
             // Le poisson est en dehors de la zone de nage, faire demi-tour
             swimDirection *= -1f;
