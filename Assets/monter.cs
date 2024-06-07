@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class MountInteraction : MonoBehaviour
 {
+    public bool peuxsata = false;
     public KeyCode interactKey = KeyCode.H; // Touche pour interagir avec la monture
     public List<GameObject> mounts = new List<GameObject>(); // Liste des montures
     public float mountAttachDistance = 1.5f; // Distance à laquelle le joueur sera attaché à la monture
@@ -27,8 +28,8 @@ public class MountInteraction : MonoBehaviour
 
     void Update()
     {
-        // Vérifie si la touche d'interaction est enfoncée
-        if (Input.GetKeyDown(interactKey))
+        // Vérifie si la touche d'interaction est enfoncée et que le joueur est en collision avec peuxsata
+        if (Input.GetKeyDown(interactKey) && peuxsata)
         {
             if (isAttached)
             {
@@ -45,8 +46,8 @@ public class MountInteraction : MonoBehaviour
     {
         // Désactiver immédiatement le script de mouvement du joueur
         playerControllerScript.enabled = false;
-        Cri.enabled=false;
-        suivicou.enabled=false;
+        Cri.enabled = false;
+        suivicou.enabled = false;
         currentMount = FindClosestMount();
 
         if (currentMount != null)
@@ -57,33 +58,42 @@ public class MountInteraction : MonoBehaviour
             // Si la distance est inférieure à la distance d'attachement spécifiée, attache le joueur à la monture
             if (distanceToMount <= mountAttachDistance)
             {
-                // Déplacer progressivement le joueur vers la monture
-                yield return StartCoroutine(MovePlayerToMount());
+                // Lancer la Coroutine pour déplacer le joueur vers la monture avec une limite de temps
+                yield return StartCoroutine(MovePlayerToMountWithTimeout(2f));
 
-                // Attache le joueur à la monture
-                transform.parent = currentMount; // La monture devient le parent du joueur
-                isAttached = true;
-
-                // S'assurer que le joueur est parfaitement aligné avec la monture
-                transform.localPosition = mountAttachOffset;
-
-                // Activer le script de contrôle de la monture
-                mountControllerScript.enabled = true;
-
-                // Activer les scripts supplémentaires
-                foreach (MonoBehaviour script in additionalScripts)
+                if (isAttached) // Vérifie si l'attachement a réussi avant de continuer
                 {
-                    script.enabled = true;
+                    // Attache le joueur à la monture
+                    transform.parent = currentMount; // La monture devient le parent du joueur
+                    isAttached = true;
+
+                    // S'assurer que le joueur est parfaitement aligné avec la monture
+                    transform.localPosition = mountAttachOffset;
+
+                    // Activer le script de contrôle de la monture
+                    mountControllerScript.enabled = true;
+
+                    // Activer les scripts supplémentaires
+                    foreach (MonoBehaviour script in additionalScripts)
+                    {
+                        script.enabled = true;
+                    }
                 }
-                //rajouter ici si le joueur ne touche plus degameobject avec le tag monter object alors DetachFromMount()
+                else
+                {
+                    // Réactiver le script de mouvement du joueur si l'attachement échoue
+                    playerControllerScript.enabled = true;
+                    suivicou.enabled = true;
+                    Cri.enabled = true;
+                }
             }
             else
             {
                 Debug.Log("Monture trop éloignée pour être attachée.");
                 // Réactiver le script de mouvement du joueur si l'attachement échoue
                 playerControllerScript.enabled = true;
-                suivicou.enabled=true;
-                Cri.enabled=true;
+                suivicou.enabled = true;
+                Cri.enabled = true;
             }
         }
         else
@@ -91,14 +101,15 @@ public class MountInteraction : MonoBehaviour
             Debug.Log("Aucune monture trouvée à distance d'attachement.");
             // Réactiver le script de mouvement du joueur si aucune monture n'est trouvée
             playerControllerScript.enabled = true;
-            suivicou.enabled=true;
-            Cri.enabled=true;
+            suivicou.enabled = true;
+            Cri.enabled = true;
         }
     }
 
-    IEnumerator MovePlayerToMount()
+    IEnumerator MovePlayerToMountWithTimeout(float timeout)
     {
         float moveSpeed = 5f; // Vitesse de déplacement du joueur vers la monture
+        float elapsedTime = 0f;
 
         while (Vector3.Distance(transform.position, currentMount.position + mountAttachOffset) > 0.1f)
         {
@@ -111,12 +122,23 @@ public class MountInteraction : MonoBehaviour
             // Déplacer le joueur vers la nouvelle position
             transform.position = newPosition;
 
+            // Augmenter le temps écoulé
+            elapsedTime += Time.deltaTime;
+
+            // Vérifier si le temps écoulé dépasse le timeout
+            if (elapsedTime > timeout)
+            {
+                DetachFromMount(); // Détacher le joueur si le timeout est dépassé
+                yield break;
+            }
+
             // Attendre le prochain frame
             yield return null;
         }
 
         // S'assurer que le joueur atteint la position exacte
         transform.position = currentMount.position + mountAttachOffset;
+        isAttached = true; // Indiquer que le joueur est attaché après avoir atteint la position
     }
 
     void DetachFromMount()
@@ -127,8 +149,8 @@ public class MountInteraction : MonoBehaviour
 
         // Réactiver le script de mouvement du joueur
         playerControllerScript.enabled = true;
-        suivicou.enabled=true;
-        Cri.enabled=true;
+        suivicou.enabled = true;
+        Cri.enabled = true;
 
         // Désactiver le script de contrôle de la monture
         mountControllerScript.enabled = false;
@@ -158,11 +180,25 @@ public class MountInteraction : MonoBehaviour
         return closestMount;
     }
 
+    // Définir la variable peuxsata sur true lorsqu'on entre en collision avec l'objet ayant le tag "peuxmonter"
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("peuxmonter"))
+        {
+            peuxsata = true;
+        }
+    }
+
+    // Si on n'est plus en collision avec un objet ayant le tag "monter object" et qu'on est attaché à une monture, détacher le joueur
     void OnTriggerExit2D(Collider2D other)
     {
-        if (other.CompareTag("monter object") && isAttached)
+        if (other.CompareTag("peuxmonter") && isAttached)
         {
             DetachFromMount();
+        }
+        if (other.CompareTag("peuxmonter"))
+        {
+            peuxsata = false;
         }
     }
 }

@@ -18,6 +18,8 @@ TagManager:
   - Walldroit
   - Dommage
   - SpecialObject
+  - Montable
+  - peuxmonter
   layers:
   - Default
   - TransparentFX

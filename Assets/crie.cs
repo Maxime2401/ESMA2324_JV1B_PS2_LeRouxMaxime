@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class CapybaraController : MonoBehaviour
 {
-    public GameObject objectToSpawn; // Référence à l'objet à faire apparaître
+    public GameObject objectToSpawn1; // Référence au premier objet à faire apparaître
+    public GameObject objectToSpawn2; // Référence au deuxième objet à faire apparaître
     public AudioClip screamSound; // Son du cri du capybara
     public AudioSource audioSource; // Référence à l'AudioSource du capybara
 
@@ -46,28 +47,46 @@ public class CapybaraController : MonoBehaviour
             }
         }
 
-        // Activez l'objet à faire apparaître
-        if (objectToSpawn != null)
+        // Activez le premier objet à faire apparaître
+        if (objectToSpawn1 != null)
         {
-            Debug.Log("Activating object.");
-            objectToSpawn.SetActive(true);
-
-            // Désactivez l'objet après une seconde
-            Invoke("DeactivateObject", 1f);
+            Debug.Log("Activating object 1.");
+            objectToSpawn1.SetActive(true);
         }
         else
         {
-            Debug.LogError("objectToSpawn is null.");
+            Debug.LogError("objectToSpawn1 is null.");
         }
+
+        // Activez le deuxième objet à faire apparaître
+        if (objectToSpawn2 != null)
+        {
+            Debug.Log("Activating object 2.");
+            objectToSpawn2.SetActive(true);
+        }
+        else
+        {
+            Debug.LogError("objectToSpawn2 is null.");
+        }
+
+        // Désactivez les objets après une seconde
+        Invoke("DeactivateObjects", 1f);
     }
 
-    void DeactivateObject()
+    void DeactivateObjects()
     {
-        // Désactivez l'objet à faire apparaître
-        if (objectToSpawn != null)
+        // Désactivez le premier objet à faire apparaître
+        if (objectToSpawn1 != null)
         {
-            Debug.Log("Deactivating object.");
-            objectToSpawn.SetActive(false);
+            Debug.Log("Deactivating object 1.");
+            objectToSpawn1.SetActive(false);
+        }
+
+        // Désactivez le deuxième objet à faire apparaître
+        if (objectToSpawn2 != null)
+        {
+            Debug.Log("Deactivating object 2.");
+            objectToSpawn2.SetActive(false);
         }
     }
 }

@@ -33,9 +33,12 @@ EditorBuildSettings:
     path: Assets/Scenes/Chargement2.unity
     guid: 5ee8bd5e71dd45649a294d199aaee5f6
   - enabled: 1
-    path: Assets/Scenes/Niveau fin.unity
-    guid: efaa40e22c2fa7a4b8e273ca4252218b
+    path: Assets/Scenes/Niveau 4.unity
+    guid: a6680c35075874b4498cf9f2be99d893
   - enabled: 1
     path: Assets/Scenes/Chargement3.unity
     guid: 00c118255b598584ba0c9adc77dd7651
+  - enabled: 1
+    path: Assets/Scenes/Niveau fin.unity
+    guid: efaa40e22c2fa7a4b8e273ca4252218b
   m_configObjects: {}

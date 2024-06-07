@@ -198,4 +198,14 @@ public class BasicCharacterController : MonoBehaviour
         }
     }
 
+    void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            if (animator != null)
+            {
+                animator.SetBool("Sol", false);
+            }
+        }
+    }
 }

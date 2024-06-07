@@ -227,6 +227,22 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1022697020791905482, guid: e3fee2583c2cf524181df1815d459395, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2.230468
+      objectReference: {fileID: 0}
+    - target: {fileID: 1022697020791905482, guid: e3fee2583c2cf524181df1815d459395, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2.6045165
+      objectReference: {fileID: 0}
+    - target: {fileID: 1022697020791905482, guid: e3fee2583c2cf524181df1815d459395, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 4.84779
+      objectReference: {fileID: 0}
+    - target: {fileID: 1022697020791905482, guid: e3fee2583c2cf524181df1815d459395, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -410
+      objectReference: {fileID: 0}
     - target: {fileID: 4574680423430835870, guid: e3fee2583c2cf524181df1815d459395, type: 3}
       propertyPath: sceneName
       value: Menu

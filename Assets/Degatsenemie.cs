@@ -18,7 +18,6 @@ public class EnemyHealth : MonoBehaviour
         currentHealth = maxHealth;
         spriteRenderer = GetComponent<SpriteRenderer>();
 
-        Debug.Log("Enemy Health initialized. Max health: " + maxHealth);
     }
 
     public void TakeDamage(int damageAmount)

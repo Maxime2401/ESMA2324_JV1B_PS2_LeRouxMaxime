@@ -22,11 +22,6 @@ public class Inventaire : MonoBehaviour
             return;
         }
 
-        if (countText == null)
-        {
-            Debug.LogError("Text component is not found in the scene!");
-        }
-
         // Écouter l'événement de chargement de scène pour mettre à jour le Text lorsqu'une nouvelle scène est chargée
         SceneManager.sceneLoaded += OnSceneLoaded;
     }

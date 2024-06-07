@@ -35,7 +35,7 @@ public class FullTurnObject : MonoBehaviour
         isTurning = true;
 
         // Tourner l'objet de 360 degrés sur l'axe Z
-        float duration = 1f; // Durée du tour complet
+        float duration = 2f; // Durée du tour complet
         float elapsed = 0f;
 
         while (elapsed < duration)
