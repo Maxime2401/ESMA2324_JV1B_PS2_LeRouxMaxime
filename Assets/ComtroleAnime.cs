@@ -22,10 +22,6 @@ public class MountMovement : MonoBehaviour
         {
             animator = animatorObject.GetComponent<Animator>();
         }
-        else
-        {
-            Debug.LogError("Animator Object is not assigned.");
-        }
 
         initialPositionX = transform.position.x; // Enregistre la position initiale de la monture
         enabled = false; // Désactiver le script au début

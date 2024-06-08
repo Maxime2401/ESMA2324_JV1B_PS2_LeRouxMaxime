@@ -9,7 +9,7 @@ public class ImageButton : MonoBehaviour
     {
         // Vérifiez si l'image est actuellement activée ou désactivée
         bool imageActive = imageToDisplay.gameObject.activeSelf;
-
+        Time.timeScale = 1f;
         // Activez ou désactivez l'image en fonction de son état actuel
         imageToDisplay.gameObject.SetActive(!imageActive);
 

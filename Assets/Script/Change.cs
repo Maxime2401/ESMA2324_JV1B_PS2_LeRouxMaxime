@@ -7,6 +7,7 @@ public class Change: MonoBehaviour
 
     public void LoadSceneOnClick()
     {
+        Time.timeScale = 1f;
         Debug.Log("Chargement de la scène : " + sceneName);
         SceneManager.LoadScene(sceneName);
     }

@@ -66,9 +66,5 @@ public class Inventaire : MonoBehaviour
         {
             countText.text = coinsCount.ToString();
         }
-        else
-        {
-            Debug.LogError("Text component is not assigned!");
-        }
     }
 }

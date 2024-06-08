@@ -13,9 +13,9 @@ public class ColliderFreeze : MonoBehaviour
             Rigidbody2D colliderRb = colliderToFreeze.GetComponent<Rigidbody2D>();
             if (colliderRb != null)
             {
-                // Rend le Rigidbody cinématique et bloque l'axe Y
+                // Rend le Rigidbody cinématique, bloque l'axe Y et la rotation Z
                 colliderRb.isKinematic = true;
-                colliderRb.constraints = RigidbodyConstraints2D.FreezePositionY;
+                colliderRb.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
             }
             // Active le mode trigger pour le collider
             colliderToFreeze.isTrigger = true;
@@ -30,9 +30,9 @@ public class ColliderFreeze : MonoBehaviour
             Rigidbody2D colliderRb = colliderToFreeze.GetComponent<Rigidbody2D>();
             if (colliderRb != null)
             {
-                // Réactive la physique et enlève les contraintes
+                // Réactive la physique, enlève les contraintes de position Y, mais garde la rotation Z figée
                 colliderRb.isKinematic = false;
-                colliderRb.constraints = RigidbodyConstraints2D.None;
+                colliderRb.constraints = RigidbodyConstraints2D.FreezeRotation;
             }
             // Désactive le mode trigger du collider
             colliderToFreeze.isTrigger = false;

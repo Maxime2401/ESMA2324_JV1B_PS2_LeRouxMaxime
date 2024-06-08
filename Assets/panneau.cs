@@ -40,7 +40,7 @@ public class ActiverDesactiverUIAvecTouche : MonoBehaviour
     {
         if (autre.CompareTag("Player"))
         {
-            joueurAInterieur = false; // Indique que le joueur n'est plus à l'intérieur du déclencheur
+            elementUI.SetActive(false); // Indique que le joueur n'est plus à l'intérieur du déclencheur
         }
     }
 }
