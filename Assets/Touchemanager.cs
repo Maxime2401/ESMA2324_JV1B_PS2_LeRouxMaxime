@@ -11,6 +11,7 @@ public class KeyBindingsManager : MonoBehaviour
         public Button button;
         public Text keyText;
         public KeyCode keyCode;
+        public KeyCode defaultKeyCode; // Ajout de la clé par défaut
     }
 
     public List<KeyBinding> keyBindings;
@@ -27,14 +28,14 @@ public class KeyBindingsManager : MonoBehaviour
             if (PlayerPrefs.HasKey(binding.actionName))
             {
                 binding.keyCode = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString(binding.actionName));
-                binding.keyText.text = binding.keyCode.ToString();
             }
             else
             {
-                binding.keyCode = KeyCode.None;
-                binding.keyText.text = "None";
+                binding.keyCode = binding.defaultKeyCode;
+                PlayerPrefs.SetString(binding.actionName, binding.defaultKeyCode.ToString());
             }
 
+            binding.keyText.text = binding.keyCode.ToString();
             actionKeyBindings[binding.actionName] = binding.keyCode;
             binding.button.onClick.AddListener(() => OnClickBindingButton(binding));
         }

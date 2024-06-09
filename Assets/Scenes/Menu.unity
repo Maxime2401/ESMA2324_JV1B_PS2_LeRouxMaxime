@@ -416,6 +416,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -315
       objectReference: {fileID: 0}
+    - target: {fileID: 2765351157749114521, guid: a1693125107dc844ebcfce524a55c9f9, type: 3}
+      propertyPath: m_Text
+      value: MONTER
+      objectReference: {fileID: 0}
     - target: {fileID: 3585021489207405713, guid: a1693125107dc844ebcfce524a55c9f9, type: 3}
       propertyPath: m_SizeDelta.x
       value: 741.57
@@ -668,6 +672,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7891803056043264842, guid: a1693125107dc844ebcfce524a55c9f9, type: 3}
+      propertyPath: keyBindings.Array.data[1].defaultKeyCode
+      value: 275
+      objectReference: {fileID: 0}
+    - target: {fileID: 7891803056043264842, guid: a1693125107dc844ebcfce524a55c9f9, type: 3}
+      propertyPath: keyBindings.Array.data[2].defaultKeyCode
+      value: 276
+      objectReference: {fileID: 0}
+    - target: {fileID: 7891803056043264842, guid: a1693125107dc844ebcfce524a55c9f9, type: 3}
+      propertyPath: keyBindings.Array.data[3].defaultKeyCode
+      value: 99
+      objectReference: {fileID: 0}
+    - target: {fileID: 7891803056043264842, guid: a1693125107dc844ebcfce524a55c9f9, type: 3}
+      propertyPath: keyBindings.Array.data[4].defaultKeyCode
+      value: 104
+      objectReference: {fileID: 0}
+    - target: {fileID: 7891803056043264842, guid: a1693125107dc844ebcfce524a55c9f9, type: 3}
+      propertyPath: keyBindings.Array.data[5].defaultKeyCode
+      value: 274
+      objectReference: {fileID: 0}
     - target: {fileID: 7893438534291427322, guid: a1693125107dc844ebcfce524a55c9f9, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 52.311
@@ -692,10 +716,18 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -1377.29
       objectReference: {fileID: 0}
+    - target: {fileID: 8514486069424387078, guid: a1693125107dc844ebcfce524a55c9f9, type: 3}
+      propertyPath: m_Text
+      value: CAPACITEE
+      objectReference: {fileID: 0}
     - target: {fileID: 8529465799302160572, guid: a1693125107dc844ebcfce524a55c9f9, type: 3}
       propertyPath: volumeSlider
       value: 
       objectReference: {fileID: 877602689}
+    - target: {fileID: 9103060838484388207, guid: a1693125107dc844ebcfce524a55c9f9, type: 3}
+      propertyPath: m_Text
+      value: CRI
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
