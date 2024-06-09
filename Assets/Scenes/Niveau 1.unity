@@ -3261,7 +3261,7 @@ GameObject:
   - component: {fileID: 88015811}
   m_Layer: 0
   m_Name: Square (7)
-  m_TagString: Untagged
+  m_TagString: tele
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4215,7 +4215,7 @@ GameObject:
   - component: {fileID: 116905385}
   m_Layer: 0
   m_Name: Square (8)
-  m_TagString: Untagged
+  m_TagString: tele
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10642,7 +10642,7 @@ GameObject:
   - component: {fileID: 306199322}
   m_Layer: 0
   m_Name: Square (13)
-  m_TagString: Untagged
+  m_TagString: tele
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -12946,10 +12946,10 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Le  Crie  vous  permet  d''ammener  les  animeaux  a  vous .
+  m_Text: 'Le  Cri  vous  permet  d''ammener  les  animaux  a  vous .
 
     Chaque
-    animal possede sa Capasite.'
+    animal possede sa Capacite.'
 --- !u!222 &416071944
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -13798,6 +13798,108 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &445901024
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 445901028}
+  - component: {fileID: 445901027}
+  - component: {fileID: 445901026}
+  - component: {fileID: 445901025}
+  m_Layer: 5
+  m_Name: Canvas
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &445901025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 445901024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+--- !u!114 &445901026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 445901024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UiScaleMode: 0
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 800, y: 600}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 0
+--- !u!223 &445901027
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 445901024}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 0
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
+--- !u!224 &445901028
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 445901024}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 826099648}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0, y: 0}
 --- !u!1 &448421078
 GameObject:
   m_ObjectHideFlags: 0
@@ -15940,16 +16042,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 509105398}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.89705044, y: 0.89705044, z: 0.89705044}
+  m_LocalScale: {x: 0.89705044, y: 0.8970504, z: 0.89705044}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 826099648}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 9.7, y: 15.3}
+  m_AnchoredPosition: {x: 9.699997, y: 15.300003}
   m_SizeDelta: {x: 139.47766, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &509105400
@@ -15985,7 +16087,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Maintenir le saut permet d'atteindre \ndes heauteur"
+  m_Text: "Maintenir le saut permet d'atteindre \ndes hauteurs"
 --- !u!222 &509105401
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -17582,7 +17684,7 @@ GameObject:
   - component: {fileID: 537768274}
   m_Layer: 0
   m_Name: Square (11)
-  m_TagString: Untagged
+  m_TagString: tele
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26093,7 +26195,7 @@ GameObject:
   - component: {fileID: 824052257}
   m_Layer: 0
   m_Name: Square (15)
-  m_TagString: Untagged
+  m_TagString: tele
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26315,7 +26417,7 @@ GameObject:
   - component: {fileID: 826099650}
   - component: {fileID: 826099649}
   m_Layer: 5
-  m_Name: panneau ui (1)
+  m_Name: permet d'atteindre hauteur
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26328,13 +26430,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 826099647}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 8.882389, y: 10.962064, z: 10.122876}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 509105399}
-  m_Father: {fileID: 924908194}
+  m_Father: {fileID: 445901028}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -29884,7 +29986,6 @@ RectTransform:
   - {fileID: 1981243320}
   - {fileID: 749221570}
   - {fileID: 1821910879}
-  - {fileID: 826099648}
   - {fileID: 1758957643}
   m_Father: {fileID: 735515476}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -39864,7 +39965,7 @@ GameObject:
   - component: {fileID: 1266173450}
   m_Layer: 0
   m_Name: Square (3)
-  m_TagString: Untagged
+  m_TagString: tele
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -43184,7 +43285,7 @@ GameObject:
   - component: {fileID: 1359087337}
   m_Layer: 0
   m_Name: Square (14)
-  m_TagString: Untagged
+  m_TagString: tele
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -47320,7 +47421,7 @@ GameObject:
   - component: {fileID: 1475513960}
   m_Layer: 0
   m_Name: Square (17)
-  m_TagString: Untagged
+  m_TagString: tele
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -49137,7 +49238,7 @@ GameObject:
   - component: {fileID: 1530397104}
   m_Layer: 0
   m_Name: Square (5)
-  m_TagString: Untagged
+  m_TagString: tele
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -51871,7 +51972,7 @@ GameObject:
   - component: {fileID: 1635374847}
   m_Layer: 0
   m_Name: Square (10)
-  m_TagString: Untagged
+  m_TagString: tele
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -52099,7 +52200,7 @@ GameObject:
   - component: {fileID: 1636038732}
   m_Layer: 0
   m_Name: Square (12)
-  m_TagString: Untagged
+  m_TagString: tele
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -56526,7 +56627,7 @@ GameObject:
   - component: {fileID: 1789664618}
   m_Layer: 0
   m_Name: Square (6)
-  m_TagString: Untagged
+  m_TagString: tele
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -57768,7 +57869,7 @@ GameObject:
   - component: {fileID: 1821910878}
   - component: {fileID: 1821910877}
   m_Layer: 5
-  m_Name: panneau ui
+  m_Name: crocotexteee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -60203,7 +60304,7 @@ GameObject:
   - component: {fileID: 1920115004}
   m_Layer: 0
   m_Name: Square (9)
-  m_TagString: Untagged
+  m_TagString: tele
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -69679,6 +69780,10 @@ PrefabInstance:
       value: -0.010183841
       objectReference: {fileID: 0}
     - target: {fileID: 5870960710647205700, guid: 0ade8bbe93e379b47abbc0b2aa791e5d, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5870960710647205700, guid: 0ade8bbe93e379b47abbc0b2aa791e5d, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
       value: 1.92
       objectReference: {fileID: 0}
@@ -69686,10 +69791,26 @@ PrefabInstance:
       propertyPath: m_SpriteTilingProperty.oldSize.y
       value: 0.96
       objectReference: {fileID: 0}
+    - target: {fileID: 5913944855204115859, guid: 0ade8bbe93e379b47abbc0b2aa791e5d, type: 3}
+      propertyPath: damageAmount
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6414443259457202277, guid: 0ade8bbe93e379b47abbc0b2aa791e5d, type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 1763132687, guid: 548d8fe9e71a32149ac188f60a2a31c7, type: 3}
+    - target: {fileID: 6414443259457202277, guid: 0ade8bbe93e379b47abbc0b2aa791e5d, type: 3}
+      propertyPath: m_Color.b
+      value: 0.49622637
+      objectReference: {fileID: 0}
+    - target: {fileID: 6414443259457202277, guid: 0ade8bbe93e379b47abbc0b2aa791e5d, type: 3}
+      propertyPath: m_Color.g
+      value: 0.49622637
+      objectReference: {fileID: 0}
+    - target: {fileID: 6414443259457202277, guid: 0ade8bbe93e379b47abbc0b2aa791e5d, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6414443259457202277, guid: 0ade8bbe93e379b47abbc0b2aa791e5d, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -70356,3 +70477,4 @@ SceneRoots:
   - {fileID: 1033123623}
   - {fileID: 1968415035}
   - {fileID: 752892537}
+  - {fileID: 445901028}

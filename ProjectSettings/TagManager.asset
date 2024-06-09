@@ -21,6 +21,7 @@ TagManager:
   - Montable
   - peuxmonter
   - lever
+  - tele
   layers:
   - Default
   - TransparentFX

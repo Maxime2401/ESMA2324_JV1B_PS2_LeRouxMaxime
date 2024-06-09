@@ -18,8 +18,8 @@ public class barvi : MonoBehaviour
     public AudioClip damageSound; 
     private AudioSource audioSource; 
 
-    public GameObject objectToReset; // Objet à réinitialiser
-    private Vector3 initialObjectPosition; // Position initiale de l'objet
+    public GameObject objectToReset; // Object to reset
+    private Vector3 initialObjectPosition; // Initial position of the object
 
     void Start()
     {
@@ -35,7 +35,7 @@ public class barvi : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         audioSource.clip = damageSound;
 
-        initialObjectPosition = objectToReset.transform.position; // Stocke la position initiale de l'objet
+        initialObjectPosition = objectToReset.transform.position; // Store the initial position of the object
     }
 
     void SetInitialSpawnPosition()
@@ -90,7 +90,7 @@ public class barvi : MonoBehaviour
         yield return new WaitForSeconds(delay);
         yield return StartCoroutine(ScaleTransitionCircle(Vector3.one, transitionDuration));
         animator.SetBool("isDead", false);
-        ResetObject(); // Réinitialise l'objet à sa position initiale
+        ResetObject(); // Reset the object to its initial position
         TeleportPlayer();
         yield return StartCoroutine(ScaleTransitionCircle(Vector3.zero, transitionDuration));
     }
@@ -128,6 +128,16 @@ public class barvi : MonoBehaviour
         {
             SetCheckpoint(other.gameObject);
         }
+        if (other.CompareTag("tele"))
+        {
+            StartCoroutine(TeleportAfterDelay(1f));
+        }
+    }
+
+    IEnumerator TeleportAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        transform.position = respawnPosition;
     }
 
     IEnumerator EnableInvincibilityWithDelay()
@@ -159,6 +169,6 @@ public class barvi : MonoBehaviour
 
     void ResetObject()
     {
-        objectToReset.transform.position = initialObjectPosition; // Réinitialise l'objet à sa position initiale
+        objectToReset.transform.position = initialObjectPosition; // Reset the object to its initial position
     }
 }
