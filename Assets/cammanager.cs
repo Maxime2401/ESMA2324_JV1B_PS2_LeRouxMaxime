@@ -2,16 +2,18 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    [SerializeField] private Transform target; // Le transform du personnage que la caméra doit suivre
-    [SerializeField] private float smoothSpeed = 0.125f; // La vitesse de suivi de la caméra
-    [SerializeField] private Vector3 offset; // L'offset de position par rapport au personnage
+    [SerializeField] private Transform target;
+    [SerializeField] private float smoothSpeed = 0.125f;
+    [SerializeField] private Vector3 offset;
+    [SerializeField] private bool enableParabolicMovement = true;
+    [SerializeField] private float parabolicHeight = 2f;
+    [SerializeField] private float parabolicDuration = 1.5f;
 
-    [Header("Parabolic Movement")]
-    [SerializeField] private bool enableParabolicMovement = true; // Activer le mouvement parabolique de la caméra
-    [SerializeField] private float parabolicHeight = 2f; // Hauteur maximale de la trajectoire parabolique
-    [SerializeField] private float parabolicDuration = 1.5f; // Durée de la trajectoire parabolique
+    [Header("Collision avec le joueur")]
+    public GameObject playerObject; // L'objet avec lequel la caméra doit entrer en collision
+    public Vector3 newPositionAfterCollision { get; private set; } // La nouvelle position de la caméra après la collision
 
-    private Vector3 initialPosition; // Position initiale de la caméra
+    public Vector3 initialPosition;
 
     void Start()
     {
@@ -30,7 +32,6 @@ public class CameraFollow : MonoBehaviour
 
     private Vector3 CalculateDesiredPosition()
     {
-        // Calculer la position désirée en utilisant seulement la position X du target et l'offset
         Vector3 desiredPosition = new Vector3(target.position.x + offset.x, transform.position.y, transform.position.z);
 
         if (enableParabolicMovement)
@@ -38,13 +39,22 @@ public class CameraFollow : MonoBehaviour
             float distanceToTarget = Vector3.Distance(transform.position, target.position);
             float parabolicHeightFactor = Mathf.Clamp01(distanceToTarget / parabolicDuration);
             float height = Mathf.Lerp(0, parabolicHeight, parabolicHeightFactor);
-
             Vector3 parabolicOffset = Vector3.up * height * Mathf.Sin(parabolicHeightFactor * Mathf.PI);
-
-            // Ajouter l'offset parabolique uniquement à la composante Y
             desiredPosition.y = transform.position.y + parabolicOffset.y;
         }
 
         return desiredPosition;
+    }
+
+    // Méthode appelée lorsqu'un objet entre en collision avec le collider de ce GameObject
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Player")) // Vérifie si l'objet en collision a le tag "Player"
+        {
+            Debug.Log("Collision avec le joueur détectée");
+            // Définir la nouvelle position de la caméra après la collision
+            newPositionAfterCollision = new Vector3(transform.position.x, other.transform.position.y + offset.y, transform.position.z);
+            Debug.Log("Nouvelle position de la caméra après collision : " + newPositionAfterCollision);
+        }
     }
 }

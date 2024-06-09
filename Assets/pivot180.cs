@@ -42,7 +42,7 @@ public class FullTurnObject : MonoBehaviour
         {
             elapsed += Time.deltaTime;
             float angle = Mathf.Lerp(0f, 360f, elapsed / duration);
-            transform.rotation = Quaternion.Euler(0f, 0f, -angle);
+            transform.rotation = Quaternion.Euler(0f, 0f, angle);
             yield return null;
         }
 

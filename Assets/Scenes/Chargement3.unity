@@ -245,7 +245,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4574680423430835870, guid: e3fee2583c2cf524181df1815d459395, type: 3}
       propertyPath: sceneName
-      value: Menu
+      value: Niveau 4
       objectReference: {fileID: 0}
     - target: {fileID: 4574680423430835870, guid: e3fee2583c2cf524181df1815d459395, type: 3}
       propertyPath: transitionDuration
