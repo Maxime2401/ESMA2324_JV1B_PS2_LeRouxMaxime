@@ -69355,11 +69355,11 @@ PrefabInstance:
       objectReference: {fileID: 911635062}
     - target: {fileID: 2155261422881821476, guid: e85fad54249b71d40b65786bbcb92d0d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -81.37
+      value: -78.04
       objectReference: {fileID: 0}
     - target: {fileID: 2155261422881821476, guid: e85fad54249b71d40b65786bbcb92d0d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -343
+      value: -341.15
       objectReference: {fileID: 0}
     - target: {fileID: 2155261422881821476, guid: e85fad54249b71d40b65786bbcb92d0d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -69437,6 +69437,14 @@ PrefabInstance:
       propertyPath: suivicou
       value: 
       objectReference: {fileID: 1372278453}
+    - target: {fileID: 7595821460753677678, guid: e85fad54249b71d40b65786bbcb92d0d, type: 3}
+      propertyPath: detachedScale.x
+      value: -1.389523
+      objectReference: {fileID: 0}
+    - target: {fileID: 7595821460753677678, guid: e85fad54249b71d40b65786bbcb92d0d, type: 3}
+      propertyPath: detachedScale.y
+      value: 1.404329
+      objectReference: {fileID: 0}
     - target: {fileID: 7595821460753677678, guid: e85fad54249b71d40b65786bbcb92d0d, type: 3}
       propertyPath: mountAttachPoint
       value: 

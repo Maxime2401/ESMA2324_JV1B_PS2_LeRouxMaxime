@@ -390,6 +390,10 @@ PrefabInstance:
       value: 0.7889788
       objectReference: {fileID: 0}
     - target: {fileID: 72556582366683997, guid: 8b87ce17c98d32a409d203de5b3da007, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 72556582366683997, guid: 8b87ce17c98d32a409d203de5b3da007, type: 3}
       propertyPath: m_Offset.x
       value: -0.10551061
       objectReference: {fileID: 0}
@@ -432,6 +436,10 @@ PrefabInstance:
     - target: {fileID: 1675704618636082581, guid: 8b87ce17c98d32a409d203de5b3da007, type: 3}
       propertyPath: m_Size.x
       value: 0.7889788
+      objectReference: {fileID: 0}
+    - target: {fileID: 1675704618636082581, guid: 8b87ce17c98d32a409d203de5b3da007, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1675704618636082581, guid: 8b87ce17c98d32a409d203de5b3da007, type: 3}
       propertyPath: m_Offset.x
@@ -680,6 +688,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4906939558257427082, guid: 8b87ce17c98d32a409d203de5b3da007, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2145340957}
+    - targetCorrespondingSourceObject: {fileID: 2966030248988268013, guid: 8b87ce17c98d32a409d203de5b3da007, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1925751734}
+    - targetCorrespondingSourceObject: {fileID: 2966030248988268013, guid: 8b87ce17c98d32a409d203de5b3da007, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1925751733}
     - targetCorrespondingSourceObject: {fileID: 6873265860842910028, guid: 8b87ce17c98d32a409d203de5b3da007, type: 3}
       insertIndex: -1
       addedObject: {fileID: 995117228}
@@ -8336,6 +8350,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2145340946}
     - target: {fileID: 7595821460753677678, guid: e85fad54249b71d40b65786bbcb92d0d, type: 3}
+      propertyPath: detachedScale.x
+      value: -1.389523
+      objectReference: {fileID: 0}
+    - target: {fileID: 7595821460753677678, guid: e85fad54249b71d40b65786bbcb92d0d, type: 3}
+      propertyPath: detachedScale.y
+      value: 1.404329
+      objectReference: {fileID: 0}
+    - target: {fileID: 7595821460753677678, guid: e85fad54249b71d40b65786bbcb92d0d, type: 3}
       propertyPath: mounts.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -14812,6 +14834,72 @@ GameObject:
 --- !u!4 &1925751732 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8492913497024515244, guid: 8b87ce17c98d32a409d203de5b3da007, type: 3}
+  m_PrefabInstance: {fileID: 34802390}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1925751733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1925751726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b83ea8e1c48fe74aaef27ba39e9cc0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colliderCible: {fileID: 2142462939}
+  colliderCapteur: {fileID: 1925751734}
+  colliderADesactiver: {fileID: 1925751737}
+  dureeDesactivation: 2
+--- !u!61 &1925751734
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1925751726}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.09615463, y: -0.6269042}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 4.92, y: 4.92}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.061039, y: 0.72957504}
+  m_EdgeRadius: 0
+--- !u!61 &1925751737 stripped
+BoxCollider2D:
+  m_CorrespondingSourceObject: {fileID: 1675704618636082581, guid: 8b87ce17c98d32a409d203de5b3da007, type: 3}
   m_PrefabInstance: {fileID: 34802390}
   m_PrefabAsset: {fileID: 0}
 --- !u!224 &1938317997 stripped

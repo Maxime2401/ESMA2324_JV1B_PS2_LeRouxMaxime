@@ -14,12 +14,13 @@ public class MountInteraction : MonoBehaviour
     public MonoBehaviour suivicou;
     public MonoBehaviour mountControllerScript; // Script de contrôle de la monture
     public MonoBehaviour[] additionalScripts; // Scripts supplémentaires à activer/désactiver
+    public Vector3 detachedScale = new Vector3(1f, 1f, 1f); // Scale du joueur lorsqu'il est détaché de la monture
 
     private bool isAttached = false; // Indique si le joueur est attaché à la monture
     private Transform currentMount; // Référence à la monture actuelle
 
     void Start()
-    {   
+    {
         keyBindingsManager = FindObjectOfType<KeyBindingsManager>();
         if (playerControllerScript == null || mountControllerScript == null)
         {
@@ -34,8 +35,9 @@ public class MountInteraction : MonoBehaviour
             return;
         }
         
-        if (keyBindingsManager.GetKeyCodeForAction("Monter") != KeyCode.None)// Si le joueur appuie sur une touche pour faire crier le capybara
-        {    // Vérifie si la touche d'interaction est enfoncée et que le joueur est en collision avec peuxsata
+        if (keyBindingsManager.GetKeyCodeForAction("Monter") != KeyCode.None)
+        {
+            // Vérifie si la touche d'interaction est enfoncée et que le joueur est en collision avec peuxsata
             if (Input.GetKeyDown(keyBindingsManager.GetKeyCodeForAction("Monter")) && peuxsata)
             {
                 if (isAttached)
@@ -154,6 +156,9 @@ public class MountInteraction : MonoBehaviour
         // Détache le joueur de la monture
         transform.parent = null; // Réinitialise le parent du joueur
         isAttached = false;
+
+        // Changer l'échelle du joueur à la valeur spécifiée
+        transform.localScale = detachedScale;
 
         // Réactiver le script de mouvement du joueur
         playerControllerScript.enabled = true;

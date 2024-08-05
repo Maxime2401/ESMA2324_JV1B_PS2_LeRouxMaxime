@@ -1470,6 +1470,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1793946467}
     - target: {fileID: 7595821460753677678, guid: e85fad54249b71d40b65786bbcb92d0d, type: 3}
+      propertyPath: detachedScale.x
+      value: -1.389523
+      objectReference: {fileID: 0}
+    - target: {fileID: 7595821460753677678, guid: e85fad54249b71d40b65786bbcb92d0d, type: 3}
+      propertyPath: detachedScale.y
+      value: 1.404329
+      objectReference: {fileID: 0}
+    - target: {fileID: 7595821460753677678, guid: e85fad54249b71d40b65786bbcb92d0d, type: 3}
       propertyPath: mounts.Array.size
       value: 3
       objectReference: {fileID: 0}
