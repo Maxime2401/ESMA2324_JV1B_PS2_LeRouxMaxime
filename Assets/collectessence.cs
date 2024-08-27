@@ -5,6 +5,7 @@ public class CollectibleItem : MonoBehaviour
     public GameObject targetObject; // L'objet dont le collider sera activé
     public int piecesNeeded = 5; // Nombre de pièces nécessaires pour activer le collider
     public Inventaire inventaire; // Référence à l'inventaire du joueur
+    public GameObject objetAApporter; // L'objet qui sera activé
 
     void OnTriggerEnter2D(Collider2D other)
     {
@@ -20,6 +21,16 @@ public class CollectibleItem : MonoBehaviour
                         targetActivator.ActivateCollider();
                         inventaire.RemoveCoins(piecesNeeded); // Retirer le nombre de pièces nécessaires
                         gameObject.SetActive(false);
+
+                        // Activer l'objet public ici
+                        if (objetAApporter != null)
+                        {
+                            objetAApporter.SetActive(true);
+                        }
+                        else
+                        {
+                            Debug.LogError("objetAApporter is not assigned!");
+                        }
                     }
                 }
             }
